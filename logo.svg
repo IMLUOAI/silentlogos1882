@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 220 80" fill="none">
+  <defs>
+    <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"   stop-color="#44aaff"/>
+      <stop offset="50%"  stop-color="#7744ff"/>
+      <stop offset="100%" stop-color="#cc44ff"/>
+    </linearGradient>
+    <linearGradient id="g2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%"   stop-color="#44aaff"/>
+      <stop offset="100%" stop-color="#cc44ff"/>
+    </linearGradient>
+  </defs>
+
+  <!-- ── ICON ── -->
+  <!-- Outer envelope / shield top flap -->
+  <polyline points="8,42 8,14 40,14 40,42" stroke="url(#g1)" stroke-width="2" stroke-linejoin="round"/>
+  <!-- Top V crease (envelope flap) -->
+  <polyline points="8,14 24,30 40,14" stroke="url(#g1)" stroke-width="2" stroke-linejoin="round"/>
+  <!-- Bottom diamond / location pin -->
+  <polyline points="8,42 24,66 40,42" stroke="url(#g1)" stroke-width="2" stroke-linejoin="round"/>
+  <!-- Outer eye / lens ring -->
+  <circle cx="24" cy="40" r="11" stroke="url(#g1)" stroke-width="2"/>
+  <!-- Inner eye / pupil ring -->
+  <circle cx="24" cy="40" r="5"  stroke="url(#g1)" stroke-width="2"/>
+  <!-- Tiny centre dot -->
+  <circle cx="24" cy="40" r="1.5" fill="url(#g1)"/>
+
+  <!-- ── TEXT ── -->
+  <text x="54" y="30"
+        font-family="'Orbitron', 'Arial Black', sans-serif"
+        font-weight="900"
+        font-size="17"
+        letter-spacing="3"
+        fill="url(#g2)">SILENT</text>
+  <text x="54" y="52"
+        font-family="'Orbitron', 'Arial Black', sans-serif"
+        font-weight="900"
+        font-size="17"
+        letter-spacing="3"
+        fill="url(#g2)">LOGOS</text>
+  <text x="54" y="70"
+        font-family="'Orbitron', 'Arial Black', sans-serif"
+        font-weight="700"
+        font-size="14"
+        letter-spacing="6"
+        fill="url(#g2)">1882</text>
+</svg>
