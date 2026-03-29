@@ -118,6 +118,18 @@
     }
     .nav-cta:hover { background: var(--pink); box-shadow: 0 0 18px var(--pink); }
 
+    .nav-cta-fb {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.75rem; letter-spacing: 0.1em; text-transform: uppercase;
+      color: #fff; background: #1877f2;
+      padding: 8px 20px; border: none; cursor: pointer;
+      clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+      text-decoration: none; transition: background 0.3s, box-shadow 0.3s;
+    }
+    .nav-cta-fb:hover { background: #0a5dc2; box-shadow: 0 0 18px rgba(24,119,242,0.6); }
+
+    .social-btn.fb:hover { border-color: #1877f2; color: #1877f2; box-shadow: 0 0 12px rgba(24,119,242,0.4); }
+
     /* ─── GLOBAL FLYING SPACESHIP ─── */
     .page-ship {
       position: fixed;
@@ -337,9 +349,35 @@
 
     .prod-body { padding: 20px 22px 24px; }
     .prod-cat { font-family: 'Share Tech Mono', monospace; font-size: 0.62rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--dim); margin-bottom: 8px; }
-    .prod-name { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 1.15rem; letter-spacing: 0.04em; color: #fff; margin-bottom: 8px; line-height: 1.3; }
-    .prod-desc { font-size: 0.88rem; font-weight: 300; color: var(--dim); line-height: 1.55; margin-bottom: 18px; }
-    .prod-footer { display: flex; align-items: center; justify-content: space-between; }
+    .prod-name { font-family: 'Rajdhani', sans-serif; font-weight: 700; font-size: 1.15rem; letter-spacing: 0.04em; color: #fff; margin-bottom: 10px; line-height: 1.3; }
+
+    /* ─── Collapsible description ─── */
+    .prod-desc-toggle {
+      display: flex; align-items: center; gap: 7px;
+      background: none; border: none; cursor: pointer; padding: 0; margin-bottom: 0;
+      font-family: 'Share Tech Mono', monospace; font-size: 0.6rem;
+      letter-spacing: 0.18em; text-transform: uppercase; color: rgba(89,148,206,0.55);
+      transition: color 0.25s;
+    }
+    .prod-desc-toggle:hover { color: var(--cyan); }
+    .prod-desc-toggle .tog-arrow {
+      display: inline-block; transition: transform 0.35s ease;
+      font-size: 0.55rem; line-height: 1;
+    }
+    .prod-desc-toggle.open .tog-arrow { transform: rotate(180deg); }
+    .prod-desc-toggle.open { color: var(--cyan); }
+
+    .prod-desc {
+      font-size: 0.88rem; font-weight: 300; color: var(--dim); line-height: 1.6;
+      max-height: 0; overflow: hidden;
+      transition: max-height 0.42s cubic-bezier(0.4,0,0.2,1), opacity 0.35s ease, margin 0.35s ease;
+      opacity: 0; margin-top: 0;
+    }
+    .prod-desc.open {
+      max-height: 160px; opacity: 1; margin-top: 10px; margin-bottom: 0;
+    }
+
+    .prod-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 18px; }
     .prod-price { font-family: 'Orbitron', monospace; font-weight: 700; font-size: 1.1rem; color: var(--cyan); text-shadow: 0 0 12px rgba(89,148,206,0.5); }
     .prod-btn {
       font-family: 'Share Tech Mono', monospace; font-size: 0.68rem; letter-spacing: 0.15em;
@@ -519,6 +557,72 @@
     }
 
     /* ═══════════════════════════════════════
+       CYBERPUNK MUSIC PLAYER (fixed bottom-right)
+    ═══════════════════════════════════════ */
+    #music-player {
+      position: fixed; bottom: 28px; right: 28px; z-index: 800;
+      display: flex; flex-direction: column; align-items: flex-end; gap: 10px;
+    }
+
+    /* Visualizer bars */
+    .music-viz {
+      display: flex; align-items: flex-end; gap: 3px;
+      height: 28px; opacity: 0; transition: opacity 0.5s;
+    }
+    .music-viz.active { opacity: 1; }
+    .viz-bar {
+      width: 3px; background: var(--cyan);
+      border-radius: 2px 2px 0 0;
+      box-shadow: 0 0 6px var(--cyan);
+      animation: none;
+    }
+    .music-viz.active .viz-bar { animation: vizBounce var(--spd, 0.6s) ease-in-out infinite alternate; }
+    @keyframes vizBounce {
+      from { height: 4px; opacity: 0.4; }
+      to   { height: var(--h, 20px); opacity: 1; }
+    }
+
+    /* Play button */
+    .music-btn {
+      width: 52px; height: 52px; border-radius: 50%;
+      background: var(--dark2);
+      border: 1.5px solid rgba(89,148,206,0.4);
+      box-shadow: 0 0 18px rgba(89,148,206,0.2), inset 0 0 12px rgba(92,88,187,0.1);
+      cursor: pointer; display: flex; align-items: center; justify-content: center;
+      transition: border-color 0.3s, box-shadow 0.3s, transform 0.2s;
+      position: relative; overflow: hidden;
+    }
+    .music-btn::before {
+      content: ''; position: absolute; inset: 0; border-radius: 50%;
+      background: radial-gradient(circle, rgba(92,88,187,0.15) 0%, transparent 70%);
+    }
+    .music-btn:hover {
+      border-color: var(--cyan);
+      box-shadow: 0 0 28px rgba(89,148,206,0.5), 0 0 50px rgba(185,87,206,0.2);
+      transform: scale(1.08);
+    }
+    .music-btn.playing {
+      border-color: var(--pink);
+      box-shadow: 0 0 24px rgba(185,87,206,0.5), 0 0 50px rgba(89,148,206,0.2);
+      animation: btnPulse 2s ease-in-out infinite;
+    }
+    @keyframes btnPulse {
+      0%,100% { box-shadow: 0 0 24px rgba(185,87,206,0.5), 0 0 50px rgba(89,148,206,0.2); }
+      50%      { box-shadow: 0 0 36px rgba(185,87,206,0.8), 0 0 70px rgba(89,148,206,0.3); }
+    }
+    .music-icon { font-size: 1.3rem; user-select: none; position: relative; z-index: 1; }
+
+    /* Track label */
+    .music-label {
+      font-family: 'Share Tech Mono', monospace; font-size: 0.58rem;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--dim); text-align: right;
+      opacity: 0; transition: opacity 0.4s;
+    }
+    .music-label.show { opacity: 1; }
+    .music-label span { color: var(--cyan); }
+
+    /* ═══════════════════════════════════════
        ADMIN EDIT PANEL  (visible at ?edit)
     ═══════════════════════════════════════ */
     #admin-overlay {
@@ -691,12 +795,15 @@
         <a href="#products" onclick="filterCat('Wellness')"><span class="cat-dot" style="background:#44cc88;box-shadow:0 0 6px #44cc88"></span>Wellness</a>
         <a href="#products" onclick="filterCat('Home Décor')"><span class="cat-dot" style="background:var(--pink);box-shadow:0 0 6px var(--pink)"></span>Home Décor</a>
         <a href="#products" onclick="filterCat('Kitchen')"><span class="cat-dot" style="background:#cc8844;box-shadow:0 0 6px #cc8844"></span>Kitchen</a>
+        <a href="#products" onclick="filterCat('Electronic')"><span class="cat-dot" style="background:#44ddff;box-shadow:0 0 6px #44ddff"></span>Electronic</a>
+        <a href="#products" onclick="filterCat('Bedroom')"><span class="cat-dot" style="background:#9966ff;box-shadow:0 0 6px #9966ff"></span>Bedroom</a>
       </div>
     </li>
     <li><a href="#about">About</a></li>
     <li><a href="#newsletter">Contact</a></li>
   </ul>
   <a class="nav-cta" href="https://www.tiktok.com/@silentlogos1882" target="_blank">Shop on TK →</a>
+  <a class="nav-cta-fb" href="https://www.facebook.com/marketplace/profile/100014920051968/?ref=permalink&mibextid=6ojiHh" target="_blank">FB Market →</a>
 </nav>
 
 <!-- GLOBAL FLYING SPACESHIP -->
@@ -757,6 +864,7 @@
   <div class="hero-buttons">
     <a class="btn-primary" href="#products">Explore Products</a>
     <a class="btn-ghost"   href="https://www.tiktok.com/@silentlogos1882" target="_blank">TK Store ↗</a>
+    <a class="btn-ghost"   href="https://www.facebook.com/marketplace/profile/100014920051968/?ref=permalink&mibextid=6ojiHh" target="_blank" style="border-color:#1877f2;color:#1877f2;">FB Marketplace ↗</a>
   </div>
   <div class="scroll-hint">Scroll</div>
 </section>
@@ -936,6 +1044,7 @@
         <p class="footer-tagline">Solar lights, Topseat bathroom fixtures, doTERRA wellness, and home décor — all in one TikTok Shop. Double Sided ISCM LLC.</p>
         <div class="footer-socials">
           <a class="social-btn" href="https://www.tiktok.com/@silentlogos1882" target="_blank">TK</a>
+          <a class="social-btn fb" href="https://www.facebook.com/marketplace/profile/100014920051968/?ref=permalink&mibextid=6ojiHh" target="_blank">FB</a>
           <a class="social-btn" href="#" target="_blank">IG</a>
           <a class="social-btn" href="mailto:doublesidediscm.usa@outlook.com">✉</a>
         </div>
@@ -944,6 +1053,7 @@
         <p class="footer-heading">// Shop</p>
         <ul class="footer-links">
           <li><a href="https://www.tiktok.com/@silentlogos1882" target="_blank">All Products</a></li>
+          <li><a href="https://www.facebook.com/marketplace/profile/100014920051968/?ref=permalink&mibextid=6ojiHh" target="_blank">FB Marketplace</a></li>
           <li><a href="https://www.tiktok.com/@silentlogos1882" target="_blank">Solar Lighting</a></li>
           <li><a href="https://www.tiktok.com/@silentlogos1882" target="_blank">Bathroom (Topseat)</a></li>
           <li><a href="https://www.tiktok.com/@silentlogos1882" target="_blank">doTERRA Wellness</a></li>
@@ -967,6 +1077,24 @@
     </div>
   </div>
 </footer>
+
+<!-- ═══════ MUSIC PLAYER ═══════ -->
+<div id="music-player">
+  <div class="music-label" id="music-label">// <span>Cyberpunk OST</span></div>
+  <div class="music-viz" id="music-viz">
+    <div class="viz-bar" style="--h:8px;--spd:0.5s"></div>
+    <div class="viz-bar" style="--h:18px;--spd:0.7s"></div>
+    <div class="viz-bar" style="--h:24px;--spd:0.4s"></div>
+    <div class="viz-bar" style="--h:14px;--spd:0.6s"></div>
+    <div class="viz-bar" style="--h:22px;--spd:0.55s"></div>
+    <div class="viz-bar" style="--h:10px;--spd:0.45s"></div>
+    <div class="viz-bar" style="--h:20px;--spd:0.65s"></div>
+    <div class="viz-bar" style="--h:16px;--spd:0.5s"></div>
+  </div>
+  <button class="music-btn" id="music-btn" title="Toggle cyberpunk music">
+    <span class="music-icon" id="music-icon">🎵</span>
+  </button>
+</div>
 
 <!-- ═══════ ADMIN EDIT PANEL ═══════ -->
 <div id="admin-overlay">
@@ -1043,6 +1171,9 @@
         <div class="prod-body">
           <p class="prod-cat">// ${p.cat}</p>
           <h3 class="prod-name">${p.name}</h3>
+          <button class="prod-desc-toggle" onclick="toggleDesc(this)" aria-expanded="false">
+            <span class="tog-arrow">▼</span> Details
+          </button>
           <p class="prod-desc">${p.desc}</p>
           <div class="prod-footer">
             <span class="prod-price">${p.price}</span>
@@ -1139,10 +1270,214 @@
   },{threshold:0.5});
   statsObs.observe(document.querySelector('#stats'));
 
+  /* ══════════════════════════════════════════════════
+     CYBERPUNK MUSIC ENGINE  —  Web Audio API
+     Procedurally generated: no files, no copyright.
+     Layers: bass drone · pad · hi-hat · arpeggio
+  ══════════════════════════════════════════════════ */
+  (function(){
+    let ctx, masterGain, playing = false;
+    let nodes = [];  // all running source nodes
+
+    const BTN  = document.getElementById('music-btn');
+    const ICON = document.getElementById('music-icon');
+    const VIZ  = document.getElementById('music-viz');
+    const LBL  = document.getElementById('music-label');
+
+    /* ── Utility ── */
+    function note(semitone) {
+      return 55 * Math.pow(2, semitone / 12); // A1 = 55 Hz base
+    }
+    function osc(type, freq, gainVal, dest) {
+      const o = ctx.createOscillator();
+      const g = ctx.createGain();
+      o.type = type; o.frequency.value = freq;
+      g.gain.value = gainVal;
+      o.connect(g); g.connect(dest);
+      o.start(); nodes.push(o);
+      return { osc: o, gain: g };
+    }
+    function noise(dest, gainVal) {
+      const buf  = ctx.createBuffer(1, ctx.sampleRate * 2, ctx.sampleRate);
+      const data = buf.getChannelData(0);
+      for (let i=0; i<data.length; i++) data[i] = Math.random()*2-1;
+      const src = ctx.createBufferSource();
+      src.buffer = buf; src.loop = true;
+      const g = ctx.createGain(); g.gain.value = gainVal;
+      src.connect(g); g.connect(dest);
+      src.start(); nodes.push(src);
+      return { src, gain: g };
+    }
+
+    function startMusic() {
+      ctx = new (window.AudioContext || window.webkitAudioContext)();
+      masterGain = ctx.createGain();
+      masterGain.gain.setValueAtTime(0, ctx.currentTime);
+      masterGain.gain.linearRampToValueAtTime(0.7, ctx.currentTime + 2.5);
+      masterGain.connect(ctx.destination);
+
+      /* ── 1. SUB BASS DRONE ── */
+      const bassFilter = ctx.createBiquadFilter();
+      bassFilter.type = 'lowpass'; bassFilter.frequency.value = 180;
+      bassFilter.Q.value = 1.8;
+      bassFilter.connect(masterGain);
+
+      const bassFreqs = [note(0), note(0), note(5), note(3)]; // A · A · D · C#
+      let bassStep = 0;
+      const b1 = osc('sawtooth', bassFreqs[0], 0.38, bassFilter);
+      const b2 = osc('square',   bassFreqs[0] * 0.5, 0.15, bassFilter);
+      // LFO for bass wobble
+      const lfo = ctx.createOscillator();
+      const lfoG = ctx.createGain(); lfoG.gain.value = 4;
+      lfo.frequency.value = 0.25; lfo.type = 'sine';
+      lfo.connect(lfoG); lfoG.connect(b1.osc.frequency);
+      lfo.start(); nodes.push(lfo);
+      // Bass chord steps every 2s
+      setInterval(()=>{
+        if (!playing) return;
+        bassStep = (bassStep+1) % bassFreqs.length;
+        const f = bassFreqs[bassStep];
+        b1.osc.frequency.linearRampToValueAtTime(f, ctx.currentTime+0.05);
+        b2.osc.frequency.linearRampToValueAtTime(f*0.5, ctx.currentTime+0.05);
+      }, 2000);
+
+      /* ── 2. ATMOSPHERIC PAD ── */
+      const padFilter = ctx.createBiquadFilter();
+      padFilter.type = 'bandpass'; padFilter.frequency.value = 800; padFilter.Q.value = 0.5;
+      const padReverb = ctx.createConvolver();
+      // simple impulse reverb
+      const irLen = ctx.sampleRate * 2.5;
+      const ir = ctx.createBuffer(2, irLen, ctx.sampleRate);
+      for (let c=0; c<2; c++) {
+        const d = ir.getChannelData(c);
+        for (let i=0; i<irLen; i++) d[i] = (Math.random()*2-1) * Math.pow(1 - i/irLen, 2.2);
+      }
+      padReverb.buffer = ir;
+      padFilter.connect(padReverb); padReverb.connect(masterGain);
+
+      const padNotes = [note(7), note(12), note(16), note(19)]; // 5th, octave, maj3, 5th+oct
+      padNotes.forEach((f,i)=>{
+        const p = osc('sawtooth', f + (i%2===0 ? 0.4 : -0.4), 0.045, padFilter);
+        // slow vibrato
+        const v = ctx.createOscillator(); const vg = ctx.createGain();
+        v.frequency.value = 0.18 + i*0.03; vg.gain.value = 1.5;
+        v.connect(vg); vg.connect(p.osc.frequency);
+        v.start(); nodes.push(v);
+      });
+
+      /* ── 3. HI-HAT RHYTHM ── */
+      const hatFilter = ctx.createBiquadFilter();
+      hatFilter.type = 'highpass'; hatFilter.frequency.value = 7000;
+      hatFilter.connect(masterGain);
+      const hatN = noise(hatFilter, 0);
+
+      const BPM = 120, step = 60/BPM;
+      // Pattern: x . x . x x . x  (8th notes)
+      const hatPat = [1,0,1,0,1,1,0,1];
+      let hatIdx = 0;
+      const hatTick = ()=>{
+        if (!playing) return;
+        const vol = hatPat[hatIdx % hatPat.length] ? 0.06 : 0;
+        hatN.gain.gain.setValueAtTime(vol, ctx.currentTime);
+        hatN.gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + step*0.3);
+        hatIdx++;
+        setTimeout(hatTick, step * 500);
+      };
+      setTimeout(hatTick, 800);
+
+      /* ── 4. KICK DRUM ── */
+      const kickInterval = setInterval(()=>{
+        if (!playing) return;
+        const k = ctx.createOscillator();
+        const kg = ctx.createGain();
+        k.type = 'sine'; k.frequency.setValueAtTime(160, ctx.currentTime);
+        k.frequency.exponentialRampToValueAtTime(40, ctx.currentTime+0.12);
+        kg.gain.setValueAtTime(0.9, ctx.currentTime);
+        kg.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime+0.25);
+        k.connect(kg); kg.connect(masterGain);
+        k.start(); k.stop(ctx.currentTime+0.26);
+      }, (60/BPM)*4*1000);
+      nodes.push({ stop: ()=>clearInterval(kickInterval) });
+
+      /* ── 5. ARPEGGIO MELODY ── */
+      const arpFilter = ctx.createBiquadFilter();
+      arpFilter.type = 'bandpass'; arpFilter.frequency.value = 2200; arpFilter.Q.value = 1.2;
+      arpFilter.connect(masterGain);
+
+      const arpScale = [0,3,7,10,12,15,19,22]; // minor pentatonic + 7th
+      const arpBase  = note(12); // A2 area
+      let arpIdx = 0;
+      const arpDelay = ctx.createDelay(0.4);
+      arpDelay.delayTime.value = 60/BPM * 0.375; // dotted eighth delay
+      const arpFb = ctx.createGain(); arpFb.gain.value = 0.35;
+      arpFilter.connect(arpDelay); arpDelay.connect(arpFb); arpFb.connect(arpDelay);
+      arpDelay.connect(masterGain);
+
+      const arpTick = ()=>{
+        if (!playing) return;
+        const sem = arpScale[arpIdx % arpScale.length];
+        const dir = Math.floor(arpIdx/arpScale.length)%2 === 0 ? 1 : -1; // up/down
+        const f = arpBase * Math.pow(2, (sem * dir + (dir<0?22:0)) / 12);
+        const a = ctx.createOscillator(); const ag = ctx.createGain();
+        a.type = 'square'; a.frequency.value = f;
+        ag.gain.setValueAtTime(0.07, ctx.currentTime);
+        ag.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + step*0.8);
+        a.connect(ag); ag.connect(arpFilter);
+        a.start(); a.stop(ctx.currentTime + step);
+        arpIdx++;
+        setTimeout(arpTick, step * 1000 * 0.5);
+      };
+      setTimeout(arpTick, 1200);
+
+      /* ── 6. MASTER FILTER SWEEP ── */
+      const sweepFilter = ctx.createBiquadFilter();
+      sweepFilter.type = 'lowpass'; sweepFilter.frequency.value = 400; sweepFilter.Q.value = 6;
+      // slow sweep up over 16s then back
+      sweepFilter.frequency.linearRampToValueAtTime(4000, ctx.currentTime+16);
+      sweepFilter.frequency.linearRampToValueAtTime(400,  ctx.currentTime+32);
+    }
+
+    function stopMusic() {
+      if (!ctx) return;
+      masterGain.gain.linearRampToValueAtTime(0, ctx.currentTime+1.5);
+      setTimeout(()=>{
+        nodes.forEach(n=>{ try{ n.stop ? n.stop() : n.stop && n.stop(); }catch(e){} });
+        nodes = [];
+        ctx.close();
+        ctx = null;
+      }, 1800);
+    }
+
+    BTN.addEventListener('click', ()=>{
+      playing = !playing;
+      if (playing) {
+        startMusic();
+        BTN.classList.add('playing');
+        ICON.textContent = '⏸';
+        VIZ.classList.add('active');
+        LBL.classList.add('show');
+      } else {
+        stopMusic();
+        BTN.classList.remove('playing');
+        ICON.textContent = '🎵';
+        VIZ.classList.remove('active');
+        LBL.classList.remove('show');
+      }
+    });
+  })();
+
+  /* ─── Description toggle ─── */
+  function toggleDesc(btn) {
+    const desc = btn.nextElementSibling;
+    const open = desc.classList.toggle('open');
+    btn.classList.toggle('open', open);
+    btn.setAttribute('aria-expanded', open);
+  }
+
   /* ═══════════════════════════════════════════════
      ADMIN PANEL  —  visit yoursite.com?edit to use
   ═══════════════════════════════════════════════ */
-  const CATS = ['Bathroom','Outdoor Lighting','Home Décor','Wellness','Kitchen','Other'];
+  const CATS = ['Bathroom','Outdoor Lighting','Home Décor','Wellness','Kitchen','Electronic','Bedroom','Other'];
   const TAGS = ['','HOT','NEW','POPULAR'];
   const LS_KEY = 'sl1882_products';
 
