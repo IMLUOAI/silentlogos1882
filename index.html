@@ -442,44 +442,101 @@ section{position:relative;z-index:1;padding:80px 24px}
 .stat-box .num{font-family:var(--font-head);font-size:1.6rem;font-weight:700;color:var(--cyan)}
 .stat-box .lbl{font-family:var(--font-mono);font-size:.65rem;color:var(--text2);letter-spacing:.1em;margin-top:4px}
 
-/* Floor photo with left→right scan */
-.floor-photo-wrap{
-  width:100%;max-width:520px;position:relative;overflow:hidden;
-  border-radius:12px;border:1px solid rgba(89,148,206,.25);
-  box-shadow:0 0 40px rgba(92,88,187,.2);
+/* ── FLOOR BEFORE / AFTER COMPARE ─────────────── */
+.floor-compare-wrap{
+  width:100%;max-width:520px;
+  position:relative;overflow:hidden;border-radius:12px;
+  border:1px solid rgba(89,148,206,.25);
+  box-shadow:0 0 50px rgba(92,88,187,.25);
+  background:#060818;
 }
-.floor-photo{width:100%;height:auto;display:block;transition:transform .6s ease}
-.floor-photo-wrap:hover .floor-photo{transform:scale(1.02)}
-.floor-photo-placeholder{
-  width:100%;height:320px;
-  background:linear-gradient(135deg,#0d0f28,#111430);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;
-  gap:14px;color:var(--text2);font-family:var(--font-mono);font-size:.8rem;
+/* Both layers share the same photo */
+.floor-img{
+  display:block;width:100%;height:auto;
+  position:relative;
 }
-/* LEFT → RIGHT scan line */
-.floor-scan{
-  position:absolute;top:0;bottom:0;width:3px;
-  background:linear-gradient(180deg,transparent,var(--cyan),var(--pink),transparent);
-  box-shadow:0 0 12px var(--cyan),0 0 24px var(--pink);
+/* BEFORE layer — desaturated, dim: raw look */
+.floor-img-before{
+  filter:grayscale(70%) brightness(0.72) contrast(0.88) sepia(15%);
+}
+/* AFTER layer — vibrant, bright, glossy: finished epoxy look */
+.floor-img-after{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;
+  filter:brightness(1.18) saturate(1.45) contrast(1.08) hue-rotate(5deg);
+  clip-path:inset(0 100% 0 0);
+  animation:revealEpoxy 4s linear infinite;
+}
+/* Gloss sheen overlay on after layer */
+.floor-img-after::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(118deg,transparent 30%,rgba(255,255,255,.1) 44%,rgba(255,255,255,.05) 50%,transparent 62%);
   pointer-events:none;
-  animation:scanRight 3.2s cubic-bezier(.4,0,.6,1) infinite;
+}
+/* BEFORE label */
+.floor-before-label{
+  position:absolute;top:12px;left:12px;z-index:6;
+  font-family:var(--font-mono);font-size:.6rem;letter-spacing:.16em;
+  color:rgba(200,180,140,.95);background:rgba(0,0,0,.6);
+  padding:3px 10px;border-radius:6px;border:1px solid rgba(180,150,100,.3);
+  pointer-events:none;
+}
+/* AFTER label — fades in once scan is past midpoint */
+.floor-after-label{
+  position:absolute;top:12px;right:12px;z-index:6;
+  font-family:var(--font-mono);font-size:.6rem;letter-spacing:.16em;
+  color:rgba(120,210,255,.95);background:rgba(6,14,30,.75);
+  padding:3px 10px;border-radius:6px;border:1px solid rgba(89,148,206,.35);
+  pointer-events:none;
+  opacity:0;animation:afterLabelFade 4s linear infinite;
+}
+@keyframes afterLabelFade{
+  0%,38%{opacity:0} 52%,92%{opacity:1} 100%{opacity:0}
+}
+/* Scan line — exactly synced with revealEpoxy (both 4s linear) */
+.floor-scan{
+  position:absolute;top:0;bottom:0;width:4px;z-index:5;
+  background:linear-gradient(180deg,transparent 0%,var(--cyan) 28%,#ffffff 50%,var(--pink) 72%,transparent 100%);
+  box-shadow:0 0 14px var(--cyan),0 0 28px rgba(89,148,206,.55),0 0 5px #fff;
+  pointer-events:none;
+  animation:scanRight 4s linear infinite;
+}
+.floor-scan::before{
+  content:'';position:absolute;top:0;bottom:0;left:-14px;width:28px;
+  background:linear-gradient(90deg,transparent,rgba(89,148,206,.1),rgba(89,148,206,.04),transparent);
+  pointer-events:none;
 }
 @keyframes scanRight{
-  0%  {left:-4px;opacity:0}
-  8%  {opacity:1}
-  92% {opacity:1}
-  100%{left:calc(100% + 4px);opacity:0}
+  0%  {left:-5px;opacity:0}
+  5%  {opacity:1}
+  95% {opacity:1}
+  100%{left:calc(100% + 5px);opacity:0}
 }
-.floor-corner{position:absolute;width:16px;height:16px}
+@keyframes revealEpoxy{
+  0%  {clip-path:inset(0 100% 0 0)}
+  5%  {clip-path:inset(0 95%  0 0)}
+  95% {clip-path:inset(0 5%   0 0)}
+  100%{clip-path:inset(0 0%   0 0)}
+}
+/* Placeholder when photo is missing */
+.floor-placeholder{
+  width:100%;padding:80px 24px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:12px;color:var(--text2);font-family:var(--font-mono);font-size:.78rem;text-align:center;
+  background:linear-gradient(135deg,#0d0f28,#111430);
+}
+.floor-placeholder small{font-size:.65rem;opacity:.6;line-height:1.6}
+
+.floor-corner{position:absolute;width:18px;height:18px;z-index:7}
 .floor-corner.tl{top:8px;left:8px;border-top:2px solid var(--cyan);border-left:2px solid var(--cyan)}
 .floor-corner.tr{top:8px;right:8px;border-top:2px solid var(--cyan);border-right:2px solid var(--cyan)}
 .floor-corner.bl{bottom:8px;left:8px;border-bottom:2px solid var(--pink);border-left:2px solid var(--pink)}
 .floor-corner.br{bottom:8px;right:8px;border-bottom:2px solid var(--pink);border-right:2px solid var(--pink)}
 .floor-label{
-  position:absolute;bottom:14px;left:50%;transform:translateX(-50%);
-  font-family:var(--font-mono);font-size:.62rem;letter-spacing:.14em;
-  color:var(--cyan);background:rgba(8,9,26,.75);
-  padding:4px 14px;border-radius:10px;border:1px solid rgba(89,148,206,.25);
+  position:absolute;bottom:12px;left:50%;transform:translateX(-50%);z-index:7;
+  font-family:var(--font-mono);font-size:.6rem;letter-spacing:.14em;
+  color:var(--cyan);background:rgba(8,9,26,.82);
+  padding:4px 14px;border-radius:10px;border:1px solid rgba(89,148,206,.3);
   white-space:nowrap;pointer-events:none;
 }
 
@@ -699,8 +756,8 @@ footer{
     <a href="https://www.facebook.com/marketplace/profile/100014920051968/?ref=permalink&mibextid=6ojiHh" target="_blank" class="nav-link">Marketplace</a>
   </div>
   <div style="display:flex;gap:10px;align-items:center">
-    <button class="nav-music-btn" id="musicBtn" onclick="toggleMusic()">
-      <span class="dot"></span><span id="musicLabel">Music</span>
+    <button class="nav-music-btn" id="musicBtn" onclick="toggleMusic()" title="Chamber music — Romantic-era England">
+      <span class="dot"></span><span id="musicLabel">♩ Music</span>
     </button>
     <a href="https://www.facebook.com/marketplace/profile/100014920051968/?ref=permalink&mibextid=6ojiHh" target="_blank" class="nav-cta">Shop Now →</a>
   </div>
@@ -802,21 +859,32 @@ footer{
       </div>
     </div>
     <div class="reveal">
-      <div class="floor-photo-wrap">
-        <img src="before-after.jpg" alt="Epoxy floor before and after transformation" class="floor-photo"
-          onerror="this.style.display='none';document.getElementById('floorPlaceholder').style.display='flex'"/>
-        <div class="floor-photo-placeholder" id="floorPlaceholder" style="display:none">
-          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-          <span>before-after.jpg</span>
-          <small>Place your before/after photo<br/>in the same folder as index.html</small>
-        </div>
+      <div class="floor-compare-wrap" id="floorWrap">
+        <!-- BEFORE: same photo, desaturated/dim -->
+        <img class="floor-img floor-img-before" src="before-after.jpg" alt="Floor before epoxy"
+          onerror="document.getElementById('floorWrap').innerHTML=document.getElementById('floorPhTpl').innerHTML"/>
+        <!-- AFTER: same photo, vivid + gloss filter, revealed by scan -->
+        <img class="floor-img floor-img-after" src="before-after.jpg" alt="Floor after epoxy"/>
+        <!-- Labels -->
+        <div class="floor-before-label">BEFORE</div>
+        <div class="floor-after-label">AFTER</div>
+        <!-- Scan line -->
         <div class="floor-scan"></div>
+        <!-- HUD corners -->
         <div class="floor-corner tl"></div>
         <div class="floor-corner tr"></div>
         <div class="floor-corner bl"></div>
         <div class="floor-corner br"></div>
         <div class="floor-label">BEFORE → AFTER · EPOXY TRANSFORMATION</div>
       </div>
+      <!-- Placeholder template (shown if image missing) -->
+      <template id="floorPhTpl">
+        <div class="floor-placeholder">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" opacity=".4"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          <span>Place <strong>before-after.jpg</strong> in the same folder as index.html</span>
+          <small>The scan will automatically show the before/after transformation<br/>using your real photo once the file is placed there.</small>
+        </div>
+      </template>
     </div>
   </div>
 </section>
@@ -1515,123 +1583,179 @@ function observeReveal(){
 }
 
 /* ═══════════════════════════════════════════════════
-   CYBERPUNK MUSIC ENGINE (Web Audio API)
+   BRITISH LITERARY MUSIC ENGINE (Web Audio API)
+   Inspired by Romantic-era English chamber music —
+   harpsichord, strings, flute, cello drone.
+   Key: D major  Tempo: ♩= 76 (Andante gracioso)
 ═══════════════════════════════════════════════════ */
 let audioCtx = null, musicNodes = [], musicPlaying = false;
 
 function buildMusicEngine(){
   audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+  const now = audioCtx.currentTime;
+
+  /* ── Master bus ── */
   const master = audioCtx.createGain();
-  master.gain.value = 0.18;
+  master.gain.value = 0.0;
+  master.gain.linearRampToValueAtTime(0.22, now + 2.5); // gentle fade-in
   master.connect(audioCtx.destination);
 
-  // Bass pulse
-  function makeBass(){
+  /* ── Hall reverb (impulse response) ── */
+  function makeReverb(dur, decay){
+    const len = audioCtx.sampleRate * dur;
+    const buf = audioCtx.createBuffer(2, len, audioCtx.sampleRate);
+    for(let ch=0; ch<2; ch++){
+      const d = buf.getChannelData(ch);
+      for(let i=0; i<len; i++) d[i] = (Math.random()*2-1) * Math.pow(1 - i/len, decay);
+    }
+    const conv = audioCtx.createConvolver();
+    conv.buffer = buf;
+    const wet = audioCtx.createGain(); wet.gain.value = 0.28;
+    conv.connect(wet); wet.connect(master);
+    return conv;
+  }
+  const hall = makeReverb(2.2, 2.4);
+
+  /* ── String pad — slow bowing on D major chord ── */
+  // D3 F#3 A3 D4 — detuned pairs for warmth
+  const stringFreqs = [146.83, 185.00, 220.00, 293.66];
+  stringFreqs.forEach(f => {
+    [0, +3, -3].forEach(detuneCents => {
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      const filt = audioCtx.createBiquadFilter();
+      osc.type = 'triangle';
+      osc.frequency.value = f * Math.pow(2, detuneCents/1200);
+      filt.type = 'lowpass'; filt.frequency.value = 1100; filt.Q.value = 0.7;
+      gain.gain.setValueAtTime(0, now);
+      gain.gain.linearRampToValueAtTime(0.038, now + 1.8);
+      osc.connect(filt); filt.connect(gain);
+      gain.connect(master); gain.connect(hall);
+      osc.start(); musicNodes.push(osc);
+    });
+  });
+
+  /* ── Cello drone — deep bowed D2 ── */
+  (function makeCello(){
+    const osc  = audioCtx.createOscillator();
+    const bow  = audioCtx.createOscillator(); // tremolo LFO
+    const bowG = audioCtx.createGain();
+    const gain = audioCtx.createGain();
+    const filt = audioCtx.createBiquadFilter();
+    osc.type = 'sawtooth'; osc.frequency.value = 73.42; // D2
+    bow.frequency.value = 4.8; bowG.gain.value = 0.06;
+    filt.type = 'lowpass'; filt.frequency.value = 380;
+    gain.gain.setValueAtTime(0, now);
+    gain.gain.linearRampToValueAtTime(0.16, now + 2.2);
+    bow.connect(bowG); bowG.connect(gain.gain);
+    osc.connect(filt); filt.connect(gain);
+    gain.connect(master);
+    osc.start(); bow.start();
+    musicNodes.push(osc, bow);
+  })();
+
+  /* ── Harpsichord arpeggio ──
+     D major arpeggio: D4 F#4 A4 D5 A4 F#4 (quill pluck) */
+  const harpSeq = [293.66, 369.99, 440.00, 587.33, 493.88, 440.00, 369.99, 329.63];
+  //               D4      F#4     A4      D5      B4      A4      F#4     E4
+  let hi = 0;
+  function harpTick(){
+    if(!musicPlaying) return;
+    const t = audioCtx.currentTime;
+    const freq = harpSeq[hi % harpSeq.length];
+    // Harpsichord = triangle + slight sawtooth overtone, very fast decay
+    [1, 2.01].forEach((mult, idx) => {
+      const osc  = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = idx === 0 ? 'triangle' : 'sawtooth';
+      osc.frequency.value = freq * mult;
+      const vol = idx === 0 ? 0.11 : 0.028;
+      gain.gain.setValueAtTime(vol, t);
+      gain.gain.exponentialRampToValueAtTime(0.0001, t + 0.55);
+      osc.connect(gain); gain.connect(master); gain.connect(hall);
+      osc.start(t); osc.stop(t + 0.6);
+    });
+    hi++;
+    setTimeout(harpTick, 310); // ♩= 76, 16th notes
+  }
+
+  /* ── Flute melody — lyrical, with vibrato ──
+     Evokes an English countryside — stepwise D major phrases */
+  const flutePhrase = [
+    // bars 1–2: rising and settling  (D5 E5 F#5 G5 F#5 E5 D5 B4)
+    587.33, 659.25, 739.99, 783.99, 739.99, 659.25, 587.33, 493.88,
+    // bars 3–4: ornamental descent   (A4 G4 F#4 E4 D4 E4 F#4 A4)
+    440.00, 392.00, 369.99, 329.63, 293.66, 329.63, 369.99, 440.00
+  ];
+  const fluteDurs = [
+    0.62, 0.62, 0.62, 0.92,  0.62, 0.62, 0.92, 0.62,
+    0.62, 0.62, 0.62, 0.62,  0.92, 0.62, 0.62, 1.24
+  ];
+  let fi = 0;
+  function fluteTick(){
+    if(!musicPlaying) return;
+    const t   = audioCtx.currentTime;
+    const dur = fluteDurs[fi % fluteDurs.length];
+    const freq= flutePhrase[fi % flutePhrase.length];
+    const osc  = audioCtx.createOscillator();
+    const vib  = audioCtx.createOscillator(); // vibrato
+    const vibG = audioCtx.createGain();
+    const gain = audioCtx.createGain();
+    osc.type = 'sine'; osc.frequency.value = freq;
+    vib.frequency.value = 5.8; vibG.gain.value = 5.2; // 5 Hz vibrato, ±5 Hz
+    vib.connect(vibG); vibG.connect(osc.frequency);
+    // Flute envelope: soft attack, gentle sustain, fade
+    gain.gain.setValueAtTime(0, t);
+    gain.gain.linearRampToValueAtTime(0.072, t + 0.12);
+    gain.gain.setValueAtTime(0.062, t + dur - 0.15);
+    gain.gain.linearRampToValueAtTime(0, t + dur + 0.05);
+    osc.connect(gain); gain.connect(master); gain.connect(hall);
+    osc.start(t); vib.start(t);
+    osc.stop(t + dur + 0.1); vib.stop(t + dur + 0.1);
+    fi++;
+    setTimeout(fluteTick, dur * 1000);
+  }
+
+  /* ── Gentle harp pluck on beat 1 & 3 ── */
+  const harpBeat = [146.83, 220.00, 293.66]; // D3 chord
+  let bi = 0;
+  function beatPluck(){
+    if(!musicPlaying) return;
+    const t = audioCtx.currentTime;
+    const freq = harpBeat[bi % harpBeat.length];
     const osc = audioCtx.createOscillator();
     const gain = audioCtx.createGain();
-    osc.type='sawtooth';
-    osc.frequency.value=55;
-    gain.gain.value=0.5;
-    osc.connect(gain); gain.connect(master);
-    osc.start();
-    // LFO for pulse
-    const lfo = audioCtx.createOscillator();
-    const lfoGain = audioCtx.createGain();
-    lfo.frequency.value=2; lfoGain.gain.value=0.4;
-    lfo.connect(lfoGain); lfoGain.connect(gain.gain);
-    lfo.start();
-    return [osc,lfo];
+    osc.type = 'sine';
+    osc.frequency.value = freq;
+    gain.gain.setValueAtTime(0.055, t);
+    gain.gain.exponentialRampToValueAtTime(0.0001, t + 1.1);
+    osc.connect(gain); gain.connect(master); gain.connect(hall);
+    osc.start(t); osc.stop(t + 1.2);
+    bi++;
+    setTimeout(beatPluck, 790); // half-note pulse
   }
 
-  // Pad chord (minor chord = root, minor3rd, 5th)
-  function makePad(freq){
-    const osc = audioCtx.createOscillator();
-    const gain = audioCtx.createGain();
-    osc.type='sine'; osc.frequency.value=freq;
-    gain.gain.value=0.12;
-    const filter = audioCtx.createBiquadFilter();
-    filter.type='lowpass'; filter.frequency.value=800;
-    osc.connect(filter); filter.connect(gain); gain.connect(master);
-    osc.start();
-    return osc;
-  }
-
-  // Arpeggio
-  function makeArp(){
-    const notes=[220,261.63,329.63,392,440,329.63,261.63,220];
-    let i=0;
-    const play=()=>{
-      if(!musicPlaying) return;
-      const osc=audioCtx.createOscillator();
-      const gain=audioCtx.createGain();
-      osc.type='square'; osc.frequency.value=notes[i%notes.length]/2;
-      gain.gain.setValueAtTime(0.08,audioCtx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001,audioCtx.currentTime+0.18);
-      osc.connect(gain); gain.connect(master);
-      osc.start(); osc.stop(audioCtx.currentTime+0.2);
-      i++; setTimeout(play,200);
-    };
-    play();
-  }
-
-  // Hi-hat clicks
-  function makeHihat(){
-    const tick=()=>{
-      if(!musicPlaying) return;
-      const buf=audioCtx.createBuffer(1,audioCtx.sampleRate*0.05,audioCtx.sampleRate);
-      const d=buf.getChannelData(0);
-      for(let i=0;i<d.length;i++) d[i]=(Math.random()*2-1)*0.15;
-      const src=audioCtx.createBufferSource();
-      const gain=audioCtx.createGain();
-      const flt=audioCtx.createBiquadFilter();
-      flt.type='highpass'; flt.frequency.value=8000;
-      src.buffer=buf; gain.gain.value=0.3;
-      src.connect(flt); flt.connect(gain); gain.connect(master);
-      src.start(); setTimeout(tick,240);
-    };
-    tick();
-  }
-
-  // Kick drum
-  function makeKick(){
-    const kick=()=>{
-      if(!musicPlaying) return;
-      const osc=audioCtx.createOscillator();
-      const gain=audioCtx.createGain();
-      osc.type='sine';
-      osc.frequency.setValueAtTime(160,audioCtx.currentTime);
-      osc.frequency.exponentialRampToValueAtTime(40,audioCtx.currentTime+0.1);
-      gain.gain.setValueAtTime(0.8,audioCtx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001,audioCtx.currentTime+0.3);
-      osc.connect(gain); gain.connect(master);
-      osc.start(); osc.stop(audioCtx.currentTime+0.35);
-      setTimeout(kick,480);
-    };
-    kick();
-  }
-
-  const [bass1,bassLfo] = makeBass();
-  const pad1 = makePad(110);
-  const pad2 = makePad(138.59); // minor 3rd
-  const pad3 = makePad(164.81); // 5th
-  musicNodes = [bass1,bassLfo,pad1,pad2,pad3,master];
-  makeArp(); makeHihat(); makeKick();
+  musicNodes = [master];
+  // Stagger entries for natural orchestral feel
+  setTimeout(harpTick,  600);
+  setTimeout(fluteTick, 1400);
+  setTimeout(beatPluck, 200);
 }
 
 function toggleMusic(){
-  const btn = document.getElementById('musicBtn');
+  const btn   = document.getElementById('musicBtn');
   const label = document.getElementById('musicLabel');
   if(!musicPlaying){
-    musicPlaying=true;
+    musicPlaying = true;
     if(!audioCtx) buildMusicEngine();
-    else if(audioCtx.state==='suspended') audioCtx.resume();
+    else if(audioCtx.state === 'suspended') audioCtx.resume();
     btn.classList.add('playing');
-    label.textContent='Playing';
+    label.textContent = 'Playing';
   } else {
-    musicPlaying=false;
+    musicPlaying = false;
     if(audioCtx) audioCtx.suspend();
     btn.classList.remove('playing');
-    label.textContent='Music';
+    label.textContent = 'Music';
   }
 }
 
