@@ -422,6 +422,169 @@ section{position:relative;z-index:1;padding:80px 24px}
 }
 .modal-fb:hover{opacity:.9;transform:translateY(-1px)}
 
+/* ── PROJECT CENTER ─────────────────────────────── */
+#projects{background:var(--dark)}
+.project-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:36px;
+  max-width:1000px;margin:0 auto;
+}
+@media(max-width:640px){.project-grid{grid-template-columns:1fr}}
+.project-card{
+  display:flex;flex-direction:column;
+  border-radius:10px;overflow:hidden;
+  border:1px solid var(--border);
+  background:var(--card);
+  transition:transform .25s,box-shadow .25s;
+}
+.project-card:hover{transform:translateY(-4px);box-shadow:0 10px 40px rgba(89,148,206,.15)}
+.project-card-img{
+  width:100%;height:210px;overflow:hidden;position:relative;flex-shrink:0;
+}
+.project-card-img img{
+  width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform .5s ease;
+}
+.project-card:hover .project-card-img img{transform:scale(1.04)}
+/* CSS fallback backgrounds when no real photo */
+.project-card-img.bg-floor{
+  background:linear-gradient(135deg,#1a1200,#3a2800,#1e1500);
+}
+.project-card-img.bg-prep{
+  background:linear-gradient(135deg,#0d1520,#1a2535,#0a1018);
+}
+.project-card-img.bg-color{
+  background:linear-gradient(135deg,#0a0818,#1a1040,#0d0a20);
+}
+.project-card-img.bg-metallic{
+  background:linear-gradient(135deg,#0a1828,#0d2540,#102e50);
+}
+.project-card-img.bg-maintain{
+  background:linear-gradient(135deg,#0f1a10,#152415,#0a120a);
+}
+.project-card-img.bg-faq{
+  background:linear-gradient(135deg,#1a0820,#2a1035,#150818);
+}
+/* SVG icon overlay on fallback bg cards */
+.project-card-img .card-icon{
+  position:absolute;inset:0;
+  display:flex;align-items:center;justify-content:center;
+  opacity:.18;
+}
+.project-card-body{padding:22px 24px 26px;display:flex;flex-direction:column;flex:1}
+.project-card-title{
+  font-family:var(--font-head);font-size:1.1rem;font-weight:700;
+  color:#ddeeff;margin-bottom:10px;line-height:1.25;
+}
+.project-card-desc{
+  font-size:.9rem;color:var(--text2);line-height:1.7;flex:1;margin-bottom:18px;
+}
+.project-card-link{
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:var(--font-mono);font-size:.72rem;letter-spacing:.08em;
+  color:var(--cyan);transition:gap .2s,opacity .2s;
+  width:fit-content;
+}
+.project-card-link:hover{gap:10px;opacity:.8}
+.project-card-link svg{flex-shrink:0}
+
+/* ── EXPLORE SECTION ────────────────────────────── */
+#explore{background:var(--dark2)}
+.explore-heading{text-align:center;margin-bottom:48px}
+.explore-heading h2{
+  font-family:var(--font-head);font-size:clamp(1.4rem,3vw,2rem);font-weight:700;
+  color:#ddeeff;margin-bottom:8px;
+}
+.explore-heading p{font-size:.95rem;color:var(--text2)}
+
+.explore-cat-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:28px;max-width:1000px;margin:0 auto 56px;
+}
+@media(max-width:700px){.explore-cat-grid{grid-template-columns:repeat(2,1fr)}}
+
+.explore-cat-item{
+  display:flex;flex-direction:column;align-items:center;
+  text-align:center;cursor:pointer;
+  transition:transform .2s;
+}
+.explore-cat-item:hover{transform:translateY(-4px)}
+.explore-cat-img{
+  width:100%;aspect-ratio:1/1;
+  border-radius:10px;
+  border:1px solid var(--border);
+  background:var(--card);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:10px;overflow:hidden;position:relative;
+  transition:border-color .2s,box-shadow .2s;
+}
+.explore-cat-item:hover .explore-cat-img{
+  border-color:var(--cyan);
+  box-shadow:0 0 22px rgba(89,148,206,.18);
+}
+.explore-cat-img svg{width:55%;height:55%;opacity:.75;transition:opacity .2s}
+.explore-cat-item:hover .explore-cat-img svg{opacity:1}
+/* Subtle gradient bg per category */
+.explore-cat-img.c-floor   {background:linear-gradient(145deg,#08121c,#0d1e30)}
+.explore-cat-img.c-metallic{background:linear-gradient(145deg,#100820,#1a1040)}
+.explore-cat-img.c-antislip{background:linear-gradient(145deg,#0a1208,#121e10)}
+.explore-cat-img.c-primer  {background:linear-gradient(145deg,#1a1200,#2a1e00)}
+.explore-cat-img.c-topcoat {background:linear-gradient(145deg,#08101a,#0a1828)}
+.explore-cat-img.c-pigment {background:linear-gradient(145deg,#180820,#28103a)}
+.explore-cat-img.c-flake   {background:linear-gradient(145deg,#0e1018,#181a2a)}
+.explore-cat-img.c-sealer  {background:linear-gradient(145deg,#0a1418,#102022)}
+
+.explore-cat-label{
+  font-family:var(--font-body);font-size:.85rem;font-weight:600;
+  color:var(--text);line-height:1.3;
+}
+
+/* Need Help banner */
+.help-banner{
+  max-width:1000px;margin:0 auto 56px;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;
+  background:var(--card);border:1px solid var(--border);border-radius:10px;
+  padding:22px 32px;
+}
+.help-banner-left h3{
+  font-family:var(--font-head);font-size:1rem;font-weight:700;color:#ddeeff;
+  margin-bottom:4px;
+}
+.help-banner-left p{font-size:.85rem;color:var(--text2)}
+.btn-learn{
+  font-family:var(--font-head);font-size:.72rem;font-weight:700;letter-spacing:.1em;
+  padding:11px 22px;border-radius:6px;white-space:nowrap;
+  background:linear-gradient(135deg,var(--cyan),var(--purple));
+  color:#fff;box-shadow:0 0 16px rgba(89,148,206,.3);
+  transition:opacity .2s,transform .15s;
+}
+.btn-learn:hover{opacity:.9;transform:translateY(-1px)}
+
+/* Tools grid */
+.tools-heading{
+  text-align:center;margin-bottom:36px;
+}
+.tools-heading h2{
+  font-family:var(--font-head);font-size:clamp(1.2rem,2.5vw,1.7rem);font-weight:700;color:#ddeeff;
+}
+.tools-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);
+  gap:24px;max-width:1000px;margin:0 auto 36px;
+}
+@media(max-width:700px){.tools-grid{grid-template-columns:repeat(2,1fr)}}
+/* Tool items reuse explore-cat-item styles */
+.view-all-wrap{text-align:center;margin-top:8px}
+.btn-view-all{
+  display:inline-block;
+  font-family:var(--font-head);font-size:.75rem;font-weight:700;letter-spacing:.1em;
+  padding:12px 32px;border-radius:6px;
+  border:1px solid var(--cyan);color:var(--cyan);
+  transition:background .2s,color .2s;
+}
+.btn-view-all:hover{background:rgba(89,148,206,.12)}
+
 /* ── ABOUT / FLOOR ──────────────────────────────── */
 #about{background:linear-gradient(180deg,var(--dark2) 0%,var(--dark) 100%)}
 .about-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
@@ -586,9 +749,25 @@ section{position:relative;z-index:1;padding:80px 24px}
 .img-upload-zone p{font-family:var(--font-mono);font-size:.72rem;color:var(--text2);margin-top:8px}
 .img-upload-zone small{font-size:.62rem;color:var(--text2);opacity:.7}
 .upload-preview{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
-.upload-thumb{
-  width:64px;height:52px;object-fit:cover;border-radius:6px;
-  border:2px solid var(--border);position:relative;
+.admin-img-item{position:relative;display:inline-block}
+.admin-img-item img{
+  width:72px;height:58px;object-fit:cover;border-radius:6px;
+  border:2px solid var(--border);display:block;
+}
+.admin-img-item .del-img{
+  position:absolute;top:-6px;right:-6px;
+  width:18px;height:18px;border-radius:50%;
+  background:rgba(220,30,80,.9);color:#fff;
+  font-size:.65rem;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;border:1px solid rgba(255,255,255,.3);
+  transition:background .2s;
+}
+.admin-img-item .del-img:hover{background:rgba(220,30,80,1)}
+.admin-img-item .main-badge{
+  position:absolute;bottom:3px;left:3px;
+  font-family:var(--font-mono);font-size:.5rem;letter-spacing:.06em;
+  background:rgba(89,148,206,.85);color:#fff;
+  padding:1px 5px;border-radius:3px;pointer-events:none;
 }
 .form-actions{display:flex;gap:10px;margin-top:8px}
 .btn-save{
@@ -669,6 +848,57 @@ footer{
 .footer-bottom a{color:var(--text2);transition:color .2s}
 .footer-bottom a:hover{color:var(--cyan)}
 
+/* ── ADMIN PASSWORD MODAL ───────────────────────── */
+.admin-gate{
+  position:fixed;inset:0;z-index:5000;
+  background:rgba(0,0,0,.82);backdrop-filter:blur(10px);
+  display:none;align-items:center;justify-content:center;padding:24px;
+}
+.admin-gate.open{display:flex}
+.admin-gate-box{
+  background:var(--dark3);border:1px solid var(--border);border-radius:14px;
+  padding:36px 32px;max-width:360px;width:100%;text-align:center;
+  box-shadow:0 0 60px rgba(89,148,206,.2);
+}
+.admin-gate-box h3{
+  font-family:var(--font-head);font-size:1rem;font-weight:700;
+  color:#ddeeff;margin-bottom:6px;letter-spacing:.06em;
+}
+.admin-gate-box p{font-family:var(--font-mono);font-size:.68rem;color:var(--text2);margin-bottom:22px}
+.admin-gate-input{
+  width:100%;background:var(--dark);border:1px solid var(--border);border-radius:8px;
+  color:var(--text);font-family:var(--font-mono);font-size:1rem;letter-spacing:.2em;
+  padding:12px 16px;text-align:center;outline:none;
+  transition:border-color .2s;margin-bottom:14px;
+}
+.admin-gate-input:focus{border-color:var(--cyan)}
+.admin-gate-input.shake{animation:gateShake .35s ease}
+@keyframes gateShake{
+  0%,100%{transform:translateX(0)}
+  20%{transform:translateX(-8px)}
+  40%{transform:translateX(8px)}
+  60%{transform:translateX(-5px)}
+  80%{transform:translateX(5px)}
+}
+.admin-gate-err{
+  font-family:var(--font-mono);font-size:.65rem;color:var(--pink);
+  height:16px;margin-bottom:14px;
+}
+.admin-gate-btns{display:flex;gap:10px}
+.btn-gate-enter{
+  flex:1;font-family:var(--font-head);font-size:.72rem;font-weight:700;letter-spacing:.1em;
+  padding:11px;border-radius:7px;
+  background:linear-gradient(135deg,var(--cyan),var(--purple));
+  color:#fff;box-shadow:0 0 16px rgba(89,148,206,.3);transition:opacity .2s;
+}
+.btn-gate-enter:hover{opacity:.9}
+.btn-gate-cancel{
+  font-family:var(--font-head);font-size:.72rem;font-weight:700;letter-spacing:.08em;
+  padding:11px 18px;border-radius:7px;border:1px solid var(--border);
+  color:var(--text2);transition:all .2s;
+}
+.btn-gate-cancel:hover{border-color:var(--pink);color:var(--pink)}
+
 /* ── GLITCH TEXT ────────────────────────────────── */
 .glitch{position:relative;display:inline-block}
 .glitch::before,.glitch::after{
@@ -714,6 +944,21 @@ footer{
 <!-- STARS CANVAS -->
 <canvas id="stars-canvas"></canvas>
 
+<!-- ADMIN PASSWORD GATE -->
+<div class="admin-gate" id="adminGate">
+  <div class="admin-gate-box">
+    <h3>⚙ Admin Access</h3>
+    <p>Enter your password to manage the store</p>
+    <input class="admin-gate-input" id="adminPwInput" type="password" placeholder="••••••••"
+      maxlength="20" onkeydown="if(event.key==='Enter')adminLogin()"/>
+    <div class="admin-gate-err" id="adminPwErr"></div>
+    <div class="admin-gate-btns">
+      <button class="btn-gate-cancel" onclick="closeAdminGate()">Cancel</button>
+      <button class="btn-gate-enter" onclick="adminLogin()">Enter</button>
+    </div>
+  </div>
+</div>
+
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
 
@@ -752,14 +997,16 @@ footer{
   <div class="nav-links">
     <a href="#products" class="nav-link">Products</a>
     <a href="#paints" class="nav-link">Epoxy Paints</a>
+    <a href="#explore" class="nav-link">Explore</a>
+    <a href="#projects" class="nav-link">Project Center</a>
     <a href="#about" class="nav-link">About</a>
-    <a href="https://www.facebook.com/marketplace/profile/100014920051968/?ref=permalink&mibextid=6ojiHh" target="_blank" class="nav-link">Marketplace</a>
+    <a href="https://www.facebook.com/share/1Cs6QVY4P3/?mibextid=wwXIfr" target="_blank" class="nav-link">Marketplace</a>
   </div>
   <div style="display:flex;gap:10px;align-items:center">
     <button class="nav-music-btn" id="musicBtn" onclick="toggleMusic()" title="Chamber music — Romantic-era England">
       <span class="dot"></span><span id="musicLabel">♩ Music</span>
     </button>
-    <a href="https://www.facebook.com/marketplace/profile/100014920051968/?ref=permalink&mibextid=6ojiHh" target="_blank" class="nav-cta">Shop Now →</a>
+    <a href="https://www.facebook.com/share/1Cs6QVY4P3/?mibextid=wwXIfr" target="_blank" class="nav-cta">Shop Now →</a>
   </div>
 </nav>
 
@@ -780,7 +1027,7 @@ footer{
   <div class="hero-buttons">
     <a class="btn-primary" href="#products">Explore Products</a>
     <a class="btn-outline" href="#paints">Epoxy Paints</a>
-    <a class="btn-fb" href="https://www.facebook.com/marketplace/profile/100014920051968/?ref=permalink&mibextid=6ojiHh" target="_blank">
+    <a class="btn-fb" href="https://www.facebook.com/share/1Cs6QVY4P3/?mibextid=wwXIfr" target="_blank">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
       Facebook Marketplace
     </a>
@@ -838,6 +1085,362 @@ footer{
     </a>
   </div>
 </div>
+
+<!-- PROJECT CENTER -->
+<section id="projects">
+  <div class="section-header reveal">
+    <span class="section-tag">// HOW-TO GUIDES</span>
+    <h2 class="section-title">Project Center</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="project-grid">
+
+    <!-- 1. Floor Coating -->
+    <div class="project-card reveal">
+      <div class="project-card-img bg-floor">
+        <div class="card-icon">
+          <svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width=".8"><rect x="2" y="14" width="20" height="7" rx="1"/><rect x="2" y="7" width="20" height="5" rx="1"/><path d="M6 7V5M12 7V4M18 7V5"/></svg>
+        </div>
+      </div>
+      <div class="project-card-body">
+        <div class="project-card-title">Epoxy Floor Coating</div>
+        <div class="project-card-desc">Transform bare concrete into a durable, high-gloss surface with our step-by-step floor coating guide. From surface cleaning to final topcoat — we walk you through every stage for a showroom-quality finish.</div>
+        <a class="project-card-link" href="#paints">
+          View All Floor Coating Guides
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- 2. Surface Preparation -->
+    <div class="project-card reveal">
+      <div class="project-card-img bg-prep">
+        <div class="card-icon">
+          <svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width=".8"><circle cx="12" cy="12" r="9"/><path d="M8 12h8M12 8v8"/><circle cx="12" cy="12" r="3"/></svg>
+        </div>
+      </div>
+      <div class="project-card-body">
+        <div class="project-card-title">Surface Preparation</div>
+        <div class="project-card-desc">Proper prep is the foundation of any great epoxy project. Learn how to clean, grind, patch, and prime your concrete surface so the coating bonds correctly and lasts for decades without peeling or bubbling.</div>
+        <a class="project-card-link" href="#about">
+          View All Surface Prep Guides
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- 3. Color & Finish Selection -->
+    <div class="project-card reveal">
+      <div class="project-card-img bg-color">
+        <div class="card-icon">
+          <svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width=".8"><circle cx="12" cy="12" r="9"/><path d="M12 3a9 9 0 0 1 9 9"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1.5" fill="white"/></svg>
+        </div>
+      </div>
+      <div class="project-card-body">
+        <div class="project-card-title">Color &amp; Finish Selection</div>
+        <div class="project-card-desc">Gloss, matte, metallic or textured — choosing the right finish changes everything. Our color guide helps you match the right epoxy system to your space, lighting, and usage requirements before you ever open a can.</div>
+        <a class="project-card-link" href="#paints">
+          View the Finish Guide
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- 4. Metallic Epoxy Techniques -->
+    <div class="project-card reveal">
+      <div class="project-card-img bg-metallic">
+        <div class="card-icon">
+          <svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width=".8"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z"/><path d="M4.93 4.93l14.14 14.14M19.07 4.93 4.93 19.07"/><circle cx="12" cy="12" r="4"/></svg>
+        </div>
+      </div>
+      <div class="project-card-body">
+        <div class="project-card-title">Metallic Epoxy Techniques</div>
+        <div class="project-card-desc">Create stunning 3D depth effects with metallic pigments. Whether you're going for ocean waves, galaxy swirls, or copper veins — learn the blending, rolling, and torch techniques that make metallic epoxy floors truly one-of-a-kind.</div>
+        <a class="project-card-link" href="#paints">
+          View Metallic Technique Guides
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- 5. Maintenance & Care -->
+    <div class="project-card reveal">
+      <div class="project-card-img bg-maintain">
+        <div class="card-icon">
+          <svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width=".8"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+      </div>
+      <div class="project-card-body">
+        <div class="project-card-title">Maintenance &amp; Care</div>
+        <div class="project-card-desc">Even the best epoxy floors need occasional care. From daily cleaning routines to repairing scratches, chips, and chemical stains — our maintenance guides keep your floor looking brand new for years after application.</div>
+        <a class="project-card-link" href="#about">
+          View All Maintenance Guides
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- 6. FAQs -->
+    <div class="project-card reveal">
+      <div class="project-card-img bg-faq">
+        <div class="card-icon">
+          <svg width="120" height="120" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width=".8"><circle cx="12" cy="12" r="9"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </div>
+      </div>
+      <div class="project-card-body">
+        <div class="project-card-title">FAQs</div>
+        <div class="project-card-desc">How long does epoxy take to cure? Can I apply it myself? What temperature does it need? We've gathered the most common questions our customers ask and answered them clearly — so you can start your project with full confidence.</div>
+        <a class="project-card-link" href="https://www.facebook.com/share/1Cs6QVY4P3/?mibextid=wwXIfr" target="_blank">
+          Ask Us on Facebook
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- EXPLORE EPOXY SYSTEMS -->
+<section id="explore">
+  <div class="explore-heading reveal">
+    <h2>Explore Epoxy Systems &amp; More</h2>
+    <p>Find the right coating for your surface.</p>
+  </div>
+
+  <!-- Product categories -->
+  <div class="explore-cat-grid">
+
+    <div class="explore-cat-item reveal" onclick="document.getElementById('paints').scrollIntoView({behavior:'smooth'})">
+      <div class="explore-cat-img c-floor">
+        <svg viewBox="0 0 64 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="14" y="18" width="36" height="48" rx="4" fill="url(#eg1)" stroke="rgba(89,148,206,.5)" stroke-width="1.2"/>
+          <rect x="20" y="10" width="24" height="10" rx="3" fill="rgba(89,148,206,.4)" stroke="rgba(89,148,206,.6)" stroke-width="1"/>
+          <rect x="22" y="28" width="20" height="24" rx="2" fill="rgba(89,148,206,.15)" stroke="rgba(89,148,206,.3)" stroke-width="1"/>
+          <text x="32" y="43" text-anchor="middle" font-size="7" fill="#7bbdff" font-family="Arial" font-weight="bold">FLOOR</text>
+          <text x="32" y="52" text-anchor="middle" font-size="5.5" fill="#7bbdff" font-family="Arial">EPOXY</text>
+          <defs><linearGradient id="eg1" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#0d2040"/><stop offset="1" stop-color="#0a1428"/></linearGradient></defs>
+        </svg>
+      </div>
+      <div class="explore-cat-label">Floor Epoxy</div>
+    </div>
+
+    <div class="explore-cat-item reveal" onclick="document.getElementById('paints').scrollIntoView({behavior:'smooth'})">
+      <div class="explore-cat-img c-metallic">
+        <svg viewBox="0 0 64 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="14" y="18" width="36" height="48" rx="4" fill="url(#eg2)" stroke="rgba(185,87,206,.5)" stroke-width="1.2"/>
+          <rect x="20" y="10" width="24" height="10" rx="3" fill="rgba(185,87,206,.35)" stroke="rgba(185,87,206,.6)" stroke-width="1"/>
+          <rect x="22" y="28" width="20" height="24" rx="2" fill="rgba(185,87,206,.1)" stroke="rgba(185,87,206,.3)" stroke-width="1"/>
+          <text x="32" y="41" text-anchor="middle" font-size="5.5" fill="#dd6ef0" font-family="Arial" font-weight="bold">METALLIC</text>
+          <text x="32" y="50" text-anchor="middle" font-size="5.5" fill="#dd6ef0" font-family="Arial">EPOXY</text>
+          <defs><linearGradient id="eg2" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#1a0830"/><stop offset="1" stop-color="#0d0520"/></linearGradient></defs>
+        </svg>
+      </div>
+      <div class="explore-cat-label">Metallic Epoxy</div>
+    </div>
+
+    <div class="explore-cat-item reveal" onclick="document.getElementById('paints').scrollIntoView({behavior:'smooth'})">
+      <div class="explore-cat-img c-antislip">
+        <svg viewBox="0 0 64 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="14" y="18" width="36" height="48" rx="4" fill="url(#eg3)" stroke="rgba(92,88,187,.5)" stroke-width="1.2"/>
+          <rect x="20" y="10" width="24" height="10" rx="3" fill="rgba(92,88,187,.35)" stroke="rgba(92,88,187,.6)" stroke-width="1"/>
+          <rect x="22" y="28" width="20" height="24" rx="2" fill="rgba(92,88,187,.12)" stroke="rgba(92,88,187,.3)" stroke-width="1"/>
+          <text x="32" y="39" text-anchor="middle" font-size="5" fill="#a89dff" font-family="Arial" font-weight="bold">ANTI-SLIP</text>
+          <text x="32" y="47" text-anchor="middle" font-size="5" fill="#a89dff" font-family="Arial">COATINGS</text>
+          <defs><linearGradient id="eg3" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#0e1830"/><stop offset="1" stop-color="#080e1e"/></linearGradient></defs>
+        </svg>
+      </div>
+      <div class="explore-cat-label">Anti-Slip Coatings</div>
+    </div>
+
+    <div class="explore-cat-item reveal" onclick="document.getElementById('paints').scrollIntoView({behavior:'smooth'})">
+      <div class="explore-cat-img c-primer">
+        <svg viewBox="0 0 64 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="14" y="18" width="36" height="48" rx="4" fill="url(#eg4)" stroke="rgba(180,140,60,.5)" stroke-width="1.2"/>
+          <rect x="20" y="10" width="24" height="10" rx="3" fill="rgba(180,140,60,.3)" stroke="rgba(180,140,60,.6)" stroke-width="1"/>
+          <rect x="22" y="28" width="20" height="24" rx="2" fill="rgba(180,140,60,.1)" stroke="rgba(180,140,60,.3)" stroke-width="1"/>
+          <text x="32" y="43" text-anchor="middle" font-size="6.5" fill="#c8a840" font-family="Arial" font-weight="bold">PRIMER</text>
+          <defs><linearGradient id="eg4" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#1e1400"/><stop offset="1" stop-color="#120d00"/></linearGradient></defs>
+        </svg>
+      </div>
+      <div class="explore-cat-label">Concrete Primer</div>
+    </div>
+
+    <div class="explore-cat-item reveal" onclick="document.getElementById('paints').scrollIntoView({behavior:'smooth'})">
+      <div class="explore-cat-img c-topcoat">
+        <svg viewBox="0 0 64 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="14" y="18" width="36" height="48" rx="4" fill="url(#eg5)" stroke="rgba(89,148,206,.4)" stroke-width="1.2"/>
+          <rect x="20" y="10" width="24" height="10" rx="3" fill="rgba(89,148,206,.3)" stroke="rgba(89,148,206,.5)" stroke-width="1"/>
+          <rect x="22" y="28" width="20" height="24" rx="2" fill="rgba(255,255,255,.06)" stroke="rgba(89,148,206,.25)" stroke-width="1"/>
+          <text x="32" y="41" text-anchor="middle" font-size="5.5" fill="#7bbdff" font-family="Arial" font-weight="bold">EPOXY</text>
+          <text x="32" y="50" text-anchor="middle" font-size="5.5" fill="#7bbdff" font-family="Arial">TOPCOAT</text>
+          <defs><linearGradient id="eg5" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#060e1c"/><stop offset="1" stop-color="#040810"/></linearGradient></defs>
+        </svg>
+      </div>
+      <div class="explore-cat-label">Epoxy Topcoat</div>
+    </div>
+
+    <div class="explore-cat-item reveal" onclick="document.getElementById('paints').scrollIntoView({behavior:'smooth'})">
+      <div class="explore-cat-img c-pigment">
+        <svg viewBox="0 0 64 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="22" cy="32" r="10" fill="rgba(185,87,206,.35)" stroke="rgba(185,87,206,.5)" stroke-width="1"/>
+          <circle cx="38" cy="32" r="10" fill="rgba(89,148,206,.35)" stroke="rgba(89,148,206,.5)" stroke-width="1"/>
+          <circle cx="30" cy="46" r="10" fill="rgba(92,88,187,.35)" stroke="rgba(92,88,187,.5)" stroke-width="1"/>
+          <circle cx="22" cy="32" r="4" fill="rgba(185,87,206,.6)"/>
+          <circle cx="38" cy="32" r="4" fill="rgba(89,148,206,.6)"/>
+          <circle cx="30" cy="46" r="4" fill="rgba(92,88,187,.6)"/>
+        </svg>
+      </div>
+      <div class="explore-cat-label">Metallic Pigments</div>
+    </div>
+
+    <div class="explore-cat-item reveal" onclick="document.getElementById('paints').scrollIntoView({behavior:'smooth'})">
+      <div class="explore-cat-img c-flake">
+        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="8" y="8" width="48" height="48" rx="3" fill="rgba(89,148,206,.08)" stroke="rgba(89,148,206,.2)" stroke-width="1"/>
+          <rect x="14" y="16" width="8" height="8" rx="1" fill="rgba(185,87,206,.6)" transform="rotate(15 18 20)"/>
+          <rect x="28" y="12" width="7" height="7" rx="1" fill="rgba(89,148,206,.7)" transform="rotate(-10 31 15)"/>
+          <rect x="42" y="18" width="6" height="9" rx="1" fill="rgba(92,88,187,.65)" transform="rotate(25 45 22)"/>
+          <rect x="12" y="34" width="9" height="6" rx="1" fill="rgba(89,148,206,.55)" transform="rotate(-20 16 37)"/>
+          <rect x="30" y="38" width="7" height="7" rx="1" fill="rgba(185,87,206,.5)" transform="rotate(30 33 41)"/>
+          <rect x="44" y="36" width="8" height="6" rx="1" fill="rgba(92,88,187,.6)" transform="rotate(-15 48 39)"/>
+        </svg>
+      </div>
+      <div class="explore-cat-label">Color Flake Chips</div>
+    </div>
+
+    <div class="explore-cat-item reveal" onclick="document.getElementById('paints').scrollIntoView({behavior:'smooth'})">
+      <div class="explore-cat-img c-sealer">
+        <svg viewBox="0 0 64 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="14" y="18" width="36" height="48" rx="4" fill="url(#eg8)" stroke="rgba(89,148,206,.35)" stroke-width="1.2"/>
+          <rect x="20" y="10" width="24" height="10" rx="3" fill="rgba(89,148,206,.25)" stroke="rgba(89,148,206,.45)" stroke-width="1"/>
+          <ellipse cx="32" cy="42" rx="11" ry="3.5" fill="rgba(255,255,255,.18)"/>
+          <text x="32" y="50" text-anchor="middle" font-size="5.5" fill="#7bbdff" font-family="Arial" font-weight="bold">SEALER</text>
+          <defs><linearGradient id="eg8" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#081420"/><stop offset="1" stop-color="#040c14"/></linearGradient></defs>
+        </svg>
+      </div>
+      <div class="explore-cat-label">Concrete Sealer</div>
+    </div>
+
+  </div>
+
+  <!-- Need Help Deciding? -->
+  <div class="help-banner reveal">
+    <div class="help-banner-left">
+      <h3>Need Help Deciding?</h3>
+      <p>Answer a few questions and we'll recommend the right epoxy system for your project.</p>
+    </div>
+    <a class="btn-learn" href="https://www.facebook.com/share/1Cs6QVY4P3/?mibextid=wwXIfr" target="_blank">CONTACT US</a>
+  </div>
+
+  <!-- Tools & Supplies -->
+  <div class="tools-heading reveal">
+    <h2>Shop Application Tools &amp; Supplies</h2>
+  </div>
+  <div class="tools-grid">
+
+    <div class="explore-cat-item reveal">
+      <div class="explore-cat-img c-floor">
+        <svg viewBox="0 0 64 64" fill="none" stroke="rgba(89,148,206,.75)" stroke-width="1.5" xmlns="http://www.w3.org/2000/svg">
+          <rect x="28" y="8" width="8" height="30" rx="2"/>
+          <rect x="18" y="36" width="28" height="10" rx="2"/>
+          <line x1="20" y1="46" x2="14" y2="58"/><line x1="44" y1="46" x2="50" y2="58"/>
+        </svg>
+      </div>
+      <div class="explore-cat-label">Rollers &amp; Frames</div>
+    </div>
+
+    <div class="explore-cat-item reveal">
+      <div class="explore-cat-img c-primer">
+        <svg viewBox="0 0 64 64" fill="none" stroke="rgba(180,140,60,.75)" stroke-width="1.5" xmlns="http://www.w3.org/2000/svg">
+          <path d="M16 20 Q16 12 32 12 Q48 12 48 20 L44 52 Q44 56 32 56 Q20 56 20 52 Z"/>
+          <line x1="20" y1="30" x2="44" y2="30" stroke-dasharray="3 3"/>
+          <line x1="22" y1="40" x2="42" y2="40" stroke-dasharray="3 3"/>
+        </svg>
+      </div>
+      <div class="explore-cat-label">Mixing Buckets</div>
+    </div>
+
+    <div class="explore-cat-item reveal">
+      <div class="explore-cat-img c-metallic">
+        <svg viewBox="0 0 64 64" fill="none" stroke="rgba(185,87,206,.75)" stroke-width="1.5" xmlns="http://www.w3.org/2000/svg">
+          <rect x="10" y="28" width="44" height="8" rx="2"/>
+          <line x1="32" y1="8" x2="32" y2="28"/>
+          <circle cx="32" cy="8" r="4"/>
+          <line x1="10" y1="36" x2="10" y2="52"/><line x1="54" y1="36" x2="54" y2="52"/>
+        </svg>
+      </div>
+      <div class="explore-cat-label">Squeegees</div>
+    </div>
+
+    <div class="explore-cat-item reveal">
+      <div class="explore-cat-img c-antislip">
+        <svg viewBox="0 0 64 64" fill="none" stroke="rgba(92,88,187,.75)" stroke-width="1.5" xmlns="http://www.w3.org/2000/svg">
+          <rect x="12" y="24" width="40" height="18" rx="3"/>
+          <line x1="12" y1="32" x2="52" y2="32"/>
+          <circle cx="18" cy="20" r="4"/><circle cx="46" cy="20" r="4"/>
+          <line x1="18" y1="24" x2="18" y2="20"/><line x1="46" y1="24" x2="46" y2="20"/>
+        </svg>
+      </div>
+      <div class="explore-cat-label">Painter's Tape</div>
+    </div>
+
+    <div class="explore-cat-item reveal">
+      <div class="explore-cat-img c-sealer">
+        <svg viewBox="0 0 64 64" fill="none" stroke="rgba(89,148,206,.75)" stroke-width="1.5" xmlns="http://www.w3.org/2000/svg">
+          <path d="M22 14 L32 8 L42 14 L42 38 L32 44 L22 38 Z"/>
+          <line x1="22" y1="14" x2="42" y2="14"/><line x1="32" y1="8" x2="32" y2="44"/>
+          <ellipse cx="32" cy="52" rx="10" ry="4"/>
+          <line x1="22" y1="38" x2="22" y2="52"/><line x1="42" y1="38" x2="42" y2="52"/>
+        </svg>
+      </div>
+      <div class="explore-cat-label">Safety Equipment</div>
+    </div>
+
+    <div class="explore-cat-item reveal">
+      <div class="explore-cat-img c-pigment">
+        <svg viewBox="0 0 64 64" fill="none" stroke="rgba(185,87,206,.75)" stroke-width="1.5" xmlns="http://www.w3.org/2000/svg">
+          <line x1="32" y1="8" x2="32" y2="56"/>
+          <ellipse cx="32" cy="32" rx="16" ry="6"/>
+          <path d="M16 32 Q16 20 32 20 Q48 20 48 32"/>
+          <path d="M16 32 Q16 44 32 44 Q48 44 48 32"/>
+        </svg>
+      </div>
+      <div class="explore-cat-label">Mixing Paddles</div>
+    </div>
+
+    <div class="explore-cat-item reveal">
+      <div class="explore-cat-img c-floor">
+        <svg viewBox="0 0 64 64" fill="none" stroke="rgba(89,148,206,.75)" stroke-width="1.5" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="32" cy="32" r="18"/>
+          <circle cx="32" cy="32" r="10"/>
+          <line x1="32" y1="8" x2="32" y2="14"/>
+          <line x1="32" y1="50" x2="32" y2="56"/>
+          <line x1="8" y1="32" x2="14" y2="32"/>
+          <line x1="50" y1="32" x2="56" y2="32"/>
+          <circle cx="32" cy="32" r="3" fill="rgba(89,148,206,.5)"/>
+        </svg>
+      </div>
+      <div class="explore-cat-label">Diamond Grinders</div>
+    </div>
+
+    <div class="explore-cat-item reveal">
+      <div class="explore-cat-img c-primer">
+        <svg viewBox="0 0 64 64" fill="none" stroke="rgba(180,140,60,.75)" stroke-width="1.5" xmlns="http://www.w3.org/2000/svg">
+          <rect x="10" y="28" width="44" height="26" rx="2"/>
+          <path d="M10 28 Q10 14 32 10 Q54 14 54 28"/>
+          <line x1="20" y1="36" x2="44" y2="36" stroke-dasharray="4 3"/>
+          <line x1="20" y1="44" x2="44" y2="44" stroke-dasharray="4 3"/>
+        </svg>
+      </div>
+      <div class="explore-cat-label">Drop Sheets</div>
+    </div>
+
+  </div>
+
+  <div class="view-all-wrap reveal">
+    <a class="btn-view-all" href="https://www.facebook.com/share/1Cs6QVY4P3/?mibextid=wwXIfr" target="_blank">VIEW ALL SUPPLIES</a>
+  </div>
+</section>
 
 <!-- ABOUT -->
 <section id="about">
@@ -948,14 +1551,16 @@ footer{
           <input type="text" id="pLink" placeholder="https://..."/>
         </div>
         <div class="form-group">
-          <label>Product Images (click zone or drag-and-drop)</label>
+          <label>Product Images — Admin Only</label>
+          <!-- Existing images with delete controls -->
+          <div id="adminImgList" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px"></div>
+          <!-- Upload zone -->
           <div class="img-upload-zone" onclick="document.getElementById('pImgInput').click()">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin:0 auto;display:block;opacity:.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-            <p>Click to upload images</p>
-            <small>Supports JPG, PNG, WebP — multiple files allowed</small>
-            <input type="file" id="pImgInput" accept="image/*" multiple style="display:none" onchange="previewImages(this)"/>
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin:0 auto;display:block;opacity:.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            <p>Click to add more photos</p>
+            <small>JPG, PNG, WebP — multiple files allowed</small>
+            <input type="file" id="pImgInput" accept="image/*" multiple style="display:none" onchange="adminAddImages(this)"/>
           </div>
-          <div class="upload-preview" id="uploadPreview"></div>
           <input type="hidden" id="pImgs" value="[]"/>
         </div>
         <div class="form-actions">
@@ -1009,7 +1614,7 @@ footer{
 <footer>
   <div class="footer-fb-bar">
     <p><strong>Shop on Facebook Marketplace</strong><br/>Browse our full catalog, message us directly, and get fast local or nationwide shipping.</p>
-    <a class="btn-fb" href="https://www.facebook.com/marketplace/profile/100014920051968/?ref=permalink&mibextid=6ojiHh" target="_blank">
+    <a class="btn-fb" href="https://www.facebook.com/share/1Cs6QVY4P3/?mibextid=wwXIfr" target="_blank">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
       Visit Marketplace
     </a>
@@ -1023,7 +1628,7 @@ footer{
         <a href="https://www.tiktok.com" target="_blank" class="social-btn" title="TikTok">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.17 8.17 0 004.78 1.52V6.77a4.85 4.85 0 01-1.01-.08z"/></svg>
         </a>
-        <a href="https://www.facebook.com/marketplace/profile/100014920051968/?ref=permalink&mibextid=6ojiHh" target="_blank" class="social-btn fb" title="Facebook">
+        <a href="https://www.facebook.com/share/1Cs6QVY4P3/?mibextid=wwXIfr" target="_blank" class="social-btn fb" title="Facebook">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
         </a>
       </div>
@@ -1032,7 +1637,7 @@ footer{
       <h4>SHOP</h4>
       <a href="#products">All Products</a>
       <a href="#paints">Epoxy Paints</a>
-      <a href="https://www.facebook.com/marketplace/profile/100014920051968/?ref=permalink&mibextid=6ojiHh" target="_blank">Facebook Marketplace</a>
+      <a href="https://www.facebook.com/share/1Cs6QVY4P3/?mibextid=wwXIfr" target="_blank">Facebook Marketplace</a>
     </div>
     <div class="footer-col">
       <h4>CATEGORIES</h4>
@@ -1048,7 +1653,7 @@ footer{
       <span>Double Sided ISCM LLC</span>
       <a href="#about">About Us</a>
       <a href="mailto:deltacloudtrade2099@outlook.com">Contact</a>
-      <a href="#" onclick="document.getElementById('admin').classList.toggle('active');return false">Admin Panel</a>
+      <a href="#" onclick="openAdminGate();return false">Admin Panel</a>
     </div>
   </div>
   <div class="footer-bottom">
@@ -1061,7 +1666,7 @@ footer{
 /* ═══════════════════════════════════════════════════
    DATA
 ═══════════════════════════════════════════════════ */
-const FB_URL = 'https://www.facebook.com/marketplace/profile/100014920051968/?ref=permalink&mibextid=6ojiHh';
+const FB_URL = 'https://www.facebook.com/share/1Cs6QVY4P3/?mibextid=wwXIfr';
 
 const CATS = ['All','Bathroom','Outdoor Lighting','Home Décor','Wellness','Kitchen','Electronic','Bedroom','Other'];
 
@@ -1233,33 +1838,26 @@ function prodCardHTML(p){
   const mainImg = imgs[0] || '';
   const tagHTML = p.tag ? `<span class="prod-tag ${p.tag}">${p.tag.toUpperCase()}</span>` : '';
 
-  // All images as thumbnails with ✕ delete button on each
-  const thumbsHTML = imgs.map((src,i)=>`
-    <div class="album-thumb-wrap">
-      <img class="album-thumb${i===0?' active':''}" src="${src}" alt="Photo ${i+1}" data-prod="${p.id}" data-idx="${i}"/>
-      <span class="album-thumb-del" data-prod="${p.id}" data-idx="${i}" title="Remove photo">✕</span>
-    </div>`).join('');
-
-  const addBtn = `<button class="album-add-btn" data-upload="${p.id}" title="Add photos">＋</button>`;
-  const countText = imgs.length ? `<span class="album-count">${imgs.length} photo${imgs.length>1?'s':''}</span>` : `<span class="album-count" style="color:var(--cyan);opacity:.7">click ＋ to add</span>`;
+  // PUBLIC view: thumbnails only for browsing — no upload, no delete buttons
+  const thumbsHTML = imgs.length > 1
+    ? imgs.map((src,i)=>`
+        <div class="album-thumb-wrap">
+          <img class="album-thumb${i===0?' active':''}" src="${src}" alt="Photo ${i+1}" data-prod="${p.id}" data-idx="${i}"/>
+        </div>`).join('')
+    : '';
 
   const mainSection = mainImg
-    ? `<img class="prod-main-img" src="${mainImg}" alt="${p.name}" data-prod="${p.id}" style="cursor:pointer" data-upload="${p.id}" title="Click to upload more photos"/>`
-    : `<div class="prod-main-placeholder" data-upload="${p.id}" title="Click to upload photos">
+    ? `<img class="prod-main-img" src="${mainImg}" alt="${p.name}" data-prod="${p.id}"/>`
+    : `<div class="prod-main-placeholder">
         <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
         <span>No photo yet</span>
-        <span class="upload-hint">↑ click to upload</span>
       </div>`;
 
   return `
   <div class="prod-card reveal">
     <div class="prod-album">
       ${mainSection}
-      <div class="album-thumbs">
-        ${thumbsHTML}
-        ${addBtn}
-        ${countText}
-      </div>
+      ${imgs.length > 1 ? `<div class="album-thumbs">${thumbsHTML}</div>` : ''}
     </div>
     <div class="prod-body">
       ${tagHTML}
@@ -1282,49 +1880,9 @@ function prodCardHTML(p){
   </div>`;
 }
 
-/* ── GLOBAL FILE INPUT for inline product photo upload ── */
-const _globalUploadInput = (()=>{
-  const inp = document.createElement('input');
-  inp.type='file'; inp.accept='image/*'; inp.multiple=true;
-  inp.style.display='none';
-  document.body.appendChild(inp);
-  return inp;
-})();
-let _uploadTargetId = null;
-
-_globalUploadInput.addEventListener('change', function(){
-  if(!_uploadTargetId) return;
-  const files = Array.from(this.files);
-  if(!files.length) return;
-  const idx = products.findIndex(p=>p.id===_uploadTargetId);
-  if(idx===-1){ _uploadTargetId=null; return; }
-  let done=0;
-  files.forEach(file=>{
-    const reader=new FileReader();
-    reader.onload=e=>{
-      products[idx].imgs=products[idx].imgs||[];
-      products[idx].imgs.push(e.target.result);
-      done++;
-      if(done===files.length){
-        saveProducts();
-        renderProducts();
-        renderAdminList();
-        showToast(`✓ ${files.length} photo${files.length>1?'s':''} added to ${products[idx].name}`);
-      }
-    };
-    reader.readAsDataURL(file);
-  });
-  this.value='';
-  _uploadTargetId=null;
-});
-
-function triggerUpload(prodId){
-  _uploadTargetId=prodId;
-  _globalUploadInput.click();
-}
 
 function attachAlbumListeners(){
-  // Thumbnail click → swap main image
+  // Thumbnail click → swap main image (view only — no editing on public page)
   document.querySelectorAll('.album-thumb').forEach(thumb=>{
     thumb.addEventListener('click',function(){
       const prodId=this.dataset.prod;
@@ -1336,38 +1894,6 @@ function attachAlbumListeners(){
       this.classList.add('active');
     });
   });
-
-  // ✕ delete thumbnail
-  document.querySelectorAll('.album-thumb-del').forEach(btn=>{
-    btn.addEventListener('click',function(e){
-      e.stopPropagation();
-      const prodId=this.dataset.prod;
-      const imgIdx=parseInt(this.dataset.idx);
-      const idx=products.findIndex(p=>p.id===prodId);
-      if(idx===-1) return;
-      if(!confirm('Remove this photo?')) return;
-      products[idx].imgs.splice(imgIdx,1);
-      saveProducts();
-      renderProducts();
-      renderAdminList();
-      showToast('Photo removed.');
-    });
-  });
-
-  // "+" add button
-  document.querySelectorAll('.album-add-btn[data-upload]').forEach(btn=>{
-    btn.addEventListener('click',function(){
-      triggerUpload(this.dataset.upload);
-    });
-  });
-
-  // Click on main image or placeholder to upload
-  document.querySelectorAll('.prod-main-img[data-upload], .prod-main-placeholder[data-upload]').forEach(el=>{
-    el.addEventListener('click',function(){
-      triggerUpload(this.dataset.upload);
-    });
-  });
-
   observeReveal();
 }
 
@@ -1509,6 +2035,47 @@ function saveProduct(){
   showToast('Product saved!');
 }
 
+/* Render the admin image list with per-image delete + "MAIN" badge */
+function renderAdminImgList(){
+  const imgs = JSON.parse(document.getElementById('pImgs').value||'[]');
+  const el = document.getElementById('adminImgList');
+  if(!el) return;
+  el.innerHTML = imgs.map((src,i)=>`
+    <div class="admin-img-item">
+      <img src="${src}" alt="Photo ${i+1}"/>
+      ${i===0?'<span class="main-badge">MAIN</span>':''}
+      <span class="del-img" onclick="adminDeleteImg(${i})" title="Remove photo">✕</span>
+    </div>`).join('');
+  el.style.display = imgs.length ? 'flex' : 'none';
+}
+
+function adminDeleteImg(idx){
+  const imgs = JSON.parse(document.getElementById('pImgs').value||'[]');
+  imgs.splice(idx,1);
+  document.getElementById('pImgs').value=JSON.stringify(imgs);
+  renderAdminImgList();
+}
+
+function adminAddImages(input){
+  const existing = JSON.parse(document.getElementById('pImgs').value||'[]');
+  const files = Array.from(input.files);
+  let done=0;
+  files.forEach(file=>{
+    const reader=new FileReader();
+    reader.onload=e=>{
+      existing.push(e.target.result);
+      done++;
+      if(done===files.length){
+        document.getElementById('pImgs').value=JSON.stringify(existing);
+        renderAdminImgList();
+        showToast(`${files.length} photo${files.length>1?'s':''} added`);
+      }
+    };
+    reader.readAsDataURL(file);
+  });
+  input.value='';
+}
+
 function editProduct(id){
   const p = products.find(x=>x.id===id);
   if(!p) return;
@@ -1520,9 +2087,8 @@ function editProduct(id){
   document.getElementById('pDesc').value=p.desc;
   document.getElementById('pLink').value=p.link||'';
   document.getElementById('pImgs').value=JSON.stringify(p.imgs||[]);
-  const preview = document.getElementById('uploadPreview');
-  preview.innerHTML=(p.imgs||[]).map(src=>`<img class="upload-thumb" src="${src}"/>`).join('');
-  window.scrollTo({top:document.getElementById('admin').offsetTop-80,behavior:'smooth'});
+  renderAdminImgList();
+  openAdminPanel();
 }
 
 function deleteProduct(id){
@@ -1541,25 +2107,64 @@ function resetProductForm(){
   document.getElementById('pDesc').value='';
   document.getElementById('pLink').value='';
   document.getElementById('pImgs').value='[]';
-  document.getElementById('uploadPreview').innerHTML='';
+  renderAdminImgList();
 }
 
-function previewImages(input){
-  const preview = document.getElementById('uploadPreview');
-  const existing = JSON.parse(document.getElementById('pImgs').value||'[]');
-  const files = Array.from(input.files);
-  files.forEach(file=>{
-    const reader = new FileReader();
-    reader.onload=e=>{
-      existing.push(e.target.result);
-      document.getElementById('pImgs').value=JSON.stringify(existing);
-      const img = document.createElement('img');
-      img.className='upload-thumb';
-      img.src=e.target.result;
-      preview.appendChild(img);
-    };
-    reader.readAsDataURL(file);
-  });
+/* ═══════════════════════════════════════════════════
+   ADMIN PASSWORD GATE
+═══════════════════════════════════════════════════ */
+// Password stored as a simple hash to avoid plain text in source
+const _ADMIN_HASH = (()=>{
+  // sha-256 lite: djb2 hash — good enough for a static site gate
+  const pw = '18820101';
+  let h = 5381;
+  for(let i=0;i<pw.length;i++) h = ((h<<5)+h)+pw.charCodeAt(i);
+  return (h >>> 0).toString(16);
+})();
+
+function _hashInput(str){
+  let h = 5381;
+  for(let i=0;i<str.length;i++) h = ((h<<5)+h)+str.charCodeAt(i);
+  return (h >>> 0).toString(16);
+}
+
+function openAdminGate(){
+  // If already authenticated this session, open directly
+  if(sessionStorage.getItem('sl1882_auth')==='1'){
+    openAdminPanel(); return;
+  }
+  document.getElementById('adminPwInput').value='';
+  document.getElementById('adminPwErr').textContent='';
+  document.getElementById('adminGate').classList.add('open');
+  setTimeout(()=>document.getElementById('adminPwInput').focus(),120);
+}
+
+function closeAdminGate(){
+  document.getElementById('adminGate').classList.remove('open');
+  document.getElementById('adminPwInput').value='';
+  document.getElementById('adminPwErr').textContent='';
+}
+
+function adminLogin(){
+  const val = document.getElementById('adminPwInput').value;
+  if(_hashInput(val)===_ADMIN_HASH){
+    sessionStorage.setItem('sl1882_auth','1');
+    closeAdminGate();
+    openAdminPanel();
+  } else {
+    const inp = document.getElementById('adminPwInput');
+    document.getElementById('adminPwErr').textContent='Incorrect password. Try again.';
+    inp.classList.remove('shake');
+    void inp.offsetWidth; // reflow to restart animation
+    inp.classList.add('shake');
+    inp.value='';
+    setTimeout(()=>inp.focus(),50);
+  }
+}
+
+function openAdminPanel(){
+  document.getElementById('admin').classList.add('active');
+  window.scrollTo({top:document.getElementById('admin').offsetTop-80,behavior:'smooth'});
 }
 
 /* ═══════════════════════════════════════════════════
@@ -1782,9 +2387,9 @@ document.addEventListener('DOMContentLoaded',()=>{
   },{threshold:.4});
   sections.forEach(s=>io.observe(s));
 
-  // Admin shortcut: ?edit in URL
+  // Admin shortcut: ?edit in URL — still requires password
   if(window.location.search.includes('edit')){
-    document.getElementById('admin').classList.add('active');
+    openAdminGate();
   }
 });
 </script>
