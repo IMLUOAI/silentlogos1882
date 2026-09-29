@@ -73,4 +73,4 @@ Everything lives in `index.html`. Open it in any text editor (VS Code recommende
 
 ## License
 
-© 2026 Silent Logos 1882. All rights reserved.
+© 2026 Silent Logos 1882 · Omeplant Nutrition LLC. All rights reserved.
