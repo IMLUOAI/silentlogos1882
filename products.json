@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-29T20:03:13.900Z",
+  "updatedAt": "2026-09-29T22:02:44.455Z",
   "products": [
     {
       "id": "p1790686934525",
@@ -353,19 +353,6 @@
       ]
     },
     {
-      "id": "p1790687504760",
-      "name": "Luxury Velvet Quilt Set King Size, Cross Stitch Striped Bedding Set",
-      "price": 48,
-      "cat": "Bedroom",
-      "tag": "new",
-      "status": "active",
-      "desc": "WARMDERN velvet quilt set, king 106 x 96 in + 2 pillow shams (20 x 36 in). 100% velvet front, 100% polyester back/fill. Vintage moss green, cross-stitched striped pattern. All-season, lightweight, breathable. Machine washable cold gentle. Pickup: 1701 10th St Suite 200, Plano TX 75074 (Mon-Fri 10am-4pm) or 9922 Monastery Dr, Plano TX 75025 (weekends 10am-5pm).",
-      "link": "https://www.facebook.com/marketplace/item/1369029348277772",
-      "imgs": [
-        "images/p1790687504760-d0b48a2a.jpg"
-      ]
-    },
-    {
       "id": "p1790687527787",
       "name": "Headphone with Bluetooth and noise cancellation",
       "price": 69,
@@ -480,19 +467,6 @@
       "link": "https://www.facebook.com/marketplace/item/1712769559833997",
       "imgs": [
         "images/p1790687685996-a49a1a43.jpg"
-      ]
-    },
-    {
-      "id": "p1790688002125",
-      "name": "Wireless Microphone System with case, Metal UHF Dual Handheld 20 Channels",
-      "price": 55,
-      "cat": "Electronic",
-      "tag": "new",
-      "status": "active",
-      "desc": "20 selectable frequencies per channel, up to 5 sets simultaneously. Includes receiver, 2 handheld transmitters, power supply, portable case, 2 antennas, 6.5mm cable. Cardioid dynamic capsule, 150ft open-area range. Ideal for karaoke, DJ, wedding, parties. Requires amplifier. Pickup in Plano, TX.",
-      "link": "https://www.facebook.com/marketplace/item/1350492341470883",
-      "imgs": [
-        "images/p1790688002125-20723026.jpg"
       ]
     }
   ]
