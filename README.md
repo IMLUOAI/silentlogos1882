@@ -1,71 +1,102 @@
-# Silent Logos 1882 — Official Store Website
+# Silent Logos 1882 — Online Store
 
-> Cyberpunk-themed landing page for the **Silent Logos 1882** TikTok Shop.
-> Built as a single-file static site — no frameworks, no dependencies, just HTML/CSS/JS.
+Storefront for **Silent Logos 1882** (Omeplant Nutrition LLC) — home goods, lighting, décor and more,
+also sold on TikTok Shop and Facebook Marketplace.
 
-🔗 **TikTok Store:** [@silentlogos1882](https://www.tiktok.com/@silentlogos1882)
-🌐 **Live Site:** *(add your GitHub Pages URL here once deployed)*
-
----
-
-## What's in the Box
-
-| File | Description |
-|------|-------------|
-| `index.html` | The website — styles, scripts, and layout |
-| `products.json` | Product catalog |
-| `README.md` | This file |
+🌐 **Live site:** https://silentlogos1882.wareplatform.com
+🔐 **Admin panel:** https://silentlogos1882.wareplatform.com/?edit (or footer → *Admin Panel*)
+🔗 **TikTok:** [@silentlogos1882](https://www.tiktok.com/@silentlogos1882)
 
 ---
 
-## How Products Work
+## How it works
 
-Products are stored in **`products.json`** and photos in **`images/`**. Don't edit them by hand —
-use the **Admin Panel** (footer → Admin Panel):
+```
+Admin panel (browser) ──► silentlogos-api.wareplatform.com ──► this GitHub repo ──► GitHub Pages (live site)
+                           (Cloudflare Worker)                  products.json + images/
+```
 
-1. Add/edit products, upload photos, or **Import from Facebook** (CSV).
-2. Press **Publish to website** — the admin Worker commits the changes to this repo and
-   GitHub Pages updates the site in about a minute.
+- The website is a static page (`index.html`) that loads the catalog from `products.json`.
+- The **admin panel** edits products as a private draft. **Publish to website** sends the draft to the
+  Cloudflare Worker, which commits `products.json` and the photos to this repo in one commit.
+  GitHub Pages updates the live site about a minute later.
+- The Worker lives in a separate folder/repo, **`silentlogos1882-worker`** — setup steps are in its `SETUP.md`.
 
-Setup of the admin Worker (`silentlogos1882-worker`) is in its `SETUP.md`.
+## Files
 
-| File | Purpose |
-|------|---------|
-| `index.html` | The website — layout, styles, scripts |
-| `products.json` | Product catalog (written by the admin panel) |
-| `images/` | Product photos (written by the admin panel) |
-| `fb-import-template.csv` | Template for importing Facebook listings |
+| Path | What it is |
+|------|------------|
+| `index.html` | The website — layout, styles and scripts |
+| `products.json` | Product catalog — **written by the admin panel** |
+| `images/` | Product photos — **written by the admin panel** |
+| `fb-import-template.csv` | Spreadsheet template for importing Facebook listings |
+| `CNAME` | Custom domain for GitHub Pages |
 
----
-
-## Deploy to GitHub Pages
-
-1. Push this repo to GitHub
-2. Go to **Settings → Pages**
-3. Set **Source** to `main` branch, `/ (root)` folder
-4. Click **Save** — your site will be live at:
-   ```
-   https://<your-username>.github.io/<repo-name>/
-   ```
-5. Paste that URL into the Live Site link above
-
-### Optional: Custom Domain
-- Buy a domain (e.g. `silentlogos1882.com`) from Namecheap or Google Domains
-- In GitHub Pages settings, add it under **Custom domain**
-- Add a `CNAME` record pointing to `<your-username>.github.io` with your domain registrar
+> Don't edit `products.json` or `images/` by hand while also publishing from the admin panel —
+> the two will conflict. If you must edit them in Git, run `git pull` first.
 
 ---
 
-## Tech Stack
+## Managing products (admin panel)
 
-- **HTML5 / CSS3 / Vanilla JS** — zero dependencies
-- **Google Fonts** — Orbitron, Share Tech Mono, Rajdhani
-- **Canvas API** — animated digital rain effect
-- **IntersectionObserver API** — scroll-reveal animations
-- **Cloudflare Worker** (`silentlogos1882-worker`) — admin login + publishing to GitHub
+**Add or edit** — fill in name, price, category, tag (HOT / NEW / SALE), status, Facebook listing URL
+and description, then **Save Product**.
+
+**Photos** — up to 20 per product. *Choose photos* (hold **Ctrl** to pick several), drag & drop, or paste.
+Click a thumbnail to make it the **MAIN** photo. Photos are resized in the browser (max 1400 px)
+and never enlarged on the storefront. iPhone **HEIC** photos must be saved as JPG first.
+
+**Sold items** — *Mark sold* in the product list (or set Status). The card shows SOLD and Buy Now is disabled.
+
+**Publish** — changes stay private until you press **Publish to website** (top bar turns orange when
+there are unpublished changes). **Discard changes** reverts to what's live.
+
+### Import from Facebook (CSV)
+
+Admin panel → **Import from Facebook** → download `fb-import-template.csv`, one row per listing:
+
+`title, price, category, description, facebook_url, photos, status`
+
+- `photos`: photo links separated by `|` — they're downloaded into `images/` when you publish.
+  Facebook photo links expire, so publish soon after importing.
+- Re-importing is safe: rows with the same Facebook URL (or title) update the existing product.
+- A Meta Commerce Manager catalog export (`title, price, image_link, availability, …`) also works.
 
 ---
 
-## License
+## Safety features
+
+- Publishing that **removes 3+ products** asks for confirmation and lists them.
+- Publishing an **empty catalog** requires typing `DELETE ALL` — and the Worker refuses it anyway.
+- The Worker rejects publishes from an **outdated tab or another device** instead of overwriting newer changes.
+- The admin password is checked by the Worker (Cloudflare secret) — it is **not** in this repo.
+
+### Undoing a bad publish
+
+Every publish is a Git commit, so nothing is ever truly lost:
+
+```bash
+git pull
+git log --oneline -- products.json          # find the last good "Publish … products" commit
+git checkout <good-commit> -- products.json images
+git commit -m "Restore catalog" && git push
+```
+
+---
+
+## Storefront features
+
+- Category filter (categories from imports are added automatically)
+- Product albums: arrows, photo counter, thumbnails; click a photo for full-screen view
+  (arrow keys / swipe, Esc to close)
+- Sold items shown last with a SOLD badge
+- Buy Now → the product's Facebook listing (Stripe checkout coming next)
+
+## Tech
+
+HTML / CSS / vanilla JavaScript · Google Fonts (Orbitron, Share Tech Mono, Rajdhani) ·
+Canvas star background · GitHub Pages hosting · Cloudflare Worker for admin login & publishing
+
+---
 
 © 2026 Silent Logos 1882 · Omeplant Nutrition LLC. All rights reserved.
