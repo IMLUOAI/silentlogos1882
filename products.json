@@ -1,0 +1,71 @@
+{
+  "updatedAt": "2026-09-29T00:00:00.000Z",
+  "products": [
+    {
+      "id": "p1",
+      "name": "LED Hollywood Vanity Mirror",
+      "price": 49.99,
+      "cat": "Bathroom",
+      "tag": "hot",
+      "status": "active",
+      "desc": "Professional Hollywood-style vanity mirror with 12 dimmable LED bulbs. Touch control, USB charging port, 3 color modes. Perfect for makeup and grooming routines.",
+      "link": "https://www.facebook.com/share/1Cs6QVY4P3/?mibextid=wwXIfr",
+      "imgs": []
+    },
+    {
+      "id": "p2",
+      "name": "Solar Garden Path Lights (8-Pack)",
+      "price": 34.99,
+      "cat": "Outdoor Lighting",
+      "tag": "new",
+      "status": "active",
+      "desc": "Waterproof IP65 solar-powered pathway lights. Auto on/off dusk-to-dawn, warm white glow. No wiring needed — simply stake into ground.",
+      "link": "https://www.facebook.com/share/1Cs6QVY4P3/?mibextid=wwXIfr",
+      "imgs": []
+    },
+    {
+      "id": "p3",
+      "name": "Ultrasonic Aroma Diffuser",
+      "price": 27.99,
+      "cat": "Wellness",
+      "tag": "",
+      "status": "active",
+      "desc": "7-color LED ultrasonic essential oil diffuser. Whisper-quiet, auto shut-off, covers up to 300 sq ft. Comes with 4 aromatherapy oils.",
+      "link": "https://www.facebook.com/share/1Cs6QVY4P3/?mibextid=wwXIfr",
+      "imgs": []
+    },
+    {
+      "id": "p4",
+      "name": "Smart RGB LED Desk Lamp",
+      "price": 39.99,
+      "cat": "Electronic",
+      "tag": "hot",
+      "status": "active",
+      "desc": "App-controlled RGB desk lamp with 16M colors, touch dimmer, USB-C charging, and memory function. Works with Alexa & Google Home.",
+      "link": "https://www.facebook.com/share/1Cs6QVY4P3/?mibextid=wwXIfr",
+      "imgs": []
+    },
+    {
+      "id": "p5",
+      "name": "Bamboo Kitchen Herb Garden Kit",
+      "price": 22.99,
+      "cat": "Kitchen",
+      "tag": "new",
+      "status": "active",
+      "desc": "Grow your own herbs indoors! Includes 6 biodegradable pots, premium soil discs, organic seeds (basil, mint, cilantro, thyme, rosemary, chives).",
+      "link": "https://www.facebook.com/share/1Cs6QVY4P3/?mibextid=wwXIfr",
+      "imgs": []
+    },
+    {
+      "id": "p6",
+      "name": "Himalayan Salt Crystal Lamp",
+      "price": 31.99,
+      "cat": "Bedroom",
+      "tag": "sale",
+      "status": "active",
+      "desc": "Authentic hand-carved Himalayan salt lamp with warm amber glow. Natural air purifier, reduces EMF, promotes relaxation. Includes dimmer switch.",
+      "link": "https://www.facebook.com/share/1Cs6QVY4P3/?mibextid=wwXIfr",
+      "imgs": []
+    }
+  ]
+}

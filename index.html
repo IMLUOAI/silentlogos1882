@@ -336,13 +336,6 @@ section{position:relative;z-index:1;padding:80px 24px}
 .img-upload-zone p{font-family:var(--font-mono);font-size:.72rem;color:var(--text2);margin-top:8px}
 .img-upload-zone small{font-size:.62rem;color:var(--text2);opacity:.7}
 .upload-preview{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
-.img-upload-zone.dragover{border-color:var(--cyan);background:rgba(89,148,206,.12);transform:scale(1.01)}
-.img-upload-zone.busy{pointer-events:none;opacity:.75;border-style:solid;border-color:var(--purple)}
-.img-upload-zone.busy svg{animation:uploadPulse 1s ease-in-out infinite}
-@keyframes uploadPulse{0%,100%{opacity:.3}50%{opacity:.9}}
-.admin-img-item img{cursor:pointer}
-.admin-img-item.fade-in{animation:imgIn .25s ease}
-@keyframes imgIn{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:none}}
 .admin-img-item{position:relative;display:inline-block}
 .admin-img-item img{
   width:72px;height:58px;object-fit:cover;border-radius:6px;
@@ -395,6 +388,60 @@ section{position:relative;z-index:1;padding:80px 24px}
 }
 .btn-edit:hover{border-color:var(--cyan);color:var(--cyan)}
 .btn-del:hover{border-color:var(--pink);color:var(--pink)}
+
+/* ── ADMIN: PUBLISH / IMPORT ─────────────────────── */
+/* Publish bar */
+.publish-bar{
+  display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap;
+  background:var(--card);border:1px solid var(--border);border-radius:10px;
+  padding:12px 16px;margin-bottom:20px;
+}
+.publish-status{display:flex;align-items:center;gap:10px;font-family:var(--font-mono);font-size:.72rem;color:var(--text2)}
+.publish-dot{width:9px;height:9px;border-radius:50%;background:#3ecf8e;box-shadow:0 0 8px #3ecf8e}
+.publish-bar.dirty{border-color:rgba(255,184,77,.5)}
+.publish-bar.dirty .publish-dot{background:#ffb84d;box-shadow:0 0 8px #ffb84d}
+.publish-bar.dirty .publish-status{color:#ffd28a}
+.publish-actions{display:flex;gap:8px}
+.publish-actions button:disabled,.btn-save:disabled,.btn-gate-enter:disabled{opacity:.4;cursor:not-allowed}
+/* Upload zones */
+.img-upload-zone.dragover{border-color:var(--cyan);background:rgba(89,148,206,.12);transform:scale(1.01)}
+.img-upload-zone.busy{pointer-events:none;opacity:.75;border-style:solid;border-color:var(--purple)}
+.img-upload-zone.busy svg{animation:uploadPulse 1s ease-in-out infinite}
+@keyframes uploadPulse{0%,100%{opacity:.3}50%{opacity:.9}}
+.admin-img-item img{cursor:pointer}
+.admin-img-item.fade-in{animation:imgIn .25s ease}
+@keyframes imgIn{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:none}}
+/* Product list */
+.admin-list-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:14px}
+.admin-list-head h3{margin-bottom:0 !important}
+.admin-search{
+  background:var(--dark3);border:1px solid var(--border);border-radius:6px;color:var(--text);
+  font-family:var(--font-body);font-size:.85rem;padding:8px 12px;outline:none;min-width:220px;
+}
+.admin-search:focus{border-color:var(--cyan)}
+.admin-prod-row.is-sold{opacity:.6}
+.status-pill{font-family:var(--font-mono);font-size:.55rem;letter-spacing:.1em;padding:2px 6px;border-radius:3px;
+  background:rgba(220,30,80,.18);color:#ff7a9a;border:1px solid rgba(220,30,80,.35);vertical-align:middle}
+/* Sold state on the storefront */
+.prod-tag.sold{background:rgba(220,30,80,.18);color:#ff7a9a;border:1px solid rgba(220,30,80,.35)}
+.prod-main-img.broken{visibility:hidden}
+.prod-card.is-sold .prod-album{filter:grayscale(.7) brightness(.75)}
+.prod-buy.disabled{opacity:.45;cursor:not-allowed;pointer-events:none;background:var(--dark3);box-shadow:none}
+/* Import */
+.import-help{font-size:.85rem;color:var(--text2);line-height:1.7;margin:0 0 18px 18px}
+.import-help a{color:var(--cyan);text-decoration:underline}
+.import-help code{font-family:var(--font-mono);font-size:.75rem;color:#ddeeff;background:var(--dark3);padding:1px 5px;border-radius:3px}
+.import-summary{font-family:var(--font-mono);font-size:.75rem;color:var(--text2);margin:20px 0 10px}
+.import-summary strong{color:#ddeeff}
+.imp-new{color:#3ecf8e}.imp-upd{color:var(--cyan)}.imp-skip{color:#ff7a9a}
+.import-table-wrap{max-height:380px;overflow:auto;border:1px solid var(--border);border-radius:8px;margin-bottom:14px}
+.import-table{width:100%;border-collapse:collapse;font-size:.8rem}
+.import-table th{position:sticky;top:0;background:var(--dark3);font-family:var(--font-mono);font-size:.62rem;letter-spacing:.08em;color:var(--text2);text-align:left;padding:8px 10px}
+.import-table td{padding:7px 10px;border-top:1px solid var(--border);color:var(--text);vertical-align:top}
+.import-table td small{color:#ff7a9a}
+.import-table tr.act-new td:nth-child(2){color:#3ecf8e}
+.import-table tr.act-update td:nth-child(2){color:var(--cyan)}
+.import-table tr.act-skip td{opacity:.6}
 
 /* ── FOOTER ─────────────────────────────────────── */
 footer{
@@ -639,39 +686,42 @@ footer{
   <div style="max-width:1100px;margin:0 auto">
     <div class="admin-header">
       <h2>⚙ Admin Panel</h2>
-      <button class="btn-reset" onclick="document.getElementById('admin').classList.remove('active')">Close Panel</button>
+      <button class="btn-reset" onclick="closeAdminPanel()">Close Panel</button>
     </div>
+
+    <!-- Publish bar -->
+    <div class="publish-bar" id="publishBar">
+      <div class="publish-status"><span class="publish-dot"></span><span id="publishStatus">Everything is live on the website</span></div>
+      <div class="publish-actions">
+        <button class="btn-reset" id="discardBtn" onclick="discardDraft()">Discard changes</button>
+        <button class="btn-save" id="publishBtn" onclick="publishChanges()">Publish to website</button>
+      </div>
+    </div>
+
     <div class="admin-tabs">
       <button class="admin-tab active" onclick="switchAdminTab('products')">Products</button>
+      <button class="admin-tab" onclick="switchAdminTab('import')">Import from Facebook</button>
     </div>
+
     <!-- PRODUCTS TAB -->
     <div class="admin-panel-section active" id="adminProducts">
       <div class="admin-form">
-        <h3 style="font-family:var(--font-head);font-size:.95rem;color:var(--cyan);margin-bottom:20px">Add / Edit Product</h3>
+        <h3 id="formTitle" style="font-family:var(--font-head);font-size:.95rem;color:var(--cyan);margin-bottom:20px">Add Product</h3>
         <input type="hidden" id="editId"/>
         <div class="form-row">
           <div class="form-group">
             <label>Product Name</label>
-            <input type="text" id="pName" placeholder="e.g. LED Mirror Light"/>
+            <input type="text" id="pName" maxlength="200" placeholder="e.g. LED Mirror Light"/>
           </div>
           <div class="form-group">
-            <label>Price</label>
-            <input type="text" id="pPrice" placeholder="e.g. $29.99"/>
+            <label>Price (USD)</label>
+            <input type="text" id="pPrice" inputmode="decimal" placeholder="e.g. 29.99"/>
           </div>
         </div>
         <div class="form-row">
           <div class="form-group">
             <label>Category</label>
-            <select id="pCat">
-              <option value="Bathroom">Bathroom</option>
-              <option value="Outdoor Lighting">Outdoor Lighting</option>
-              <option value="Home Décor">Home Décor</option>
-              <option value="Wellness">Wellness</option>
-              <option value="Kitchen">Kitchen</option>
-              <option value="Electronic">Electronic</option>
-              <option value="Bedroom">Bedroom</option>
-              <option value="Other">Other</option>
-            </select>
+            <select id="pCat"></select>
           </div>
           <div class="form-group">
             <label>Tag</label>
@@ -683,19 +733,26 @@ footer{
             </select>
           </div>
         </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Status</label>
+            <select id="pStatus">
+              <option value="active">Available</option>
+              <option value="sold">Sold</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Facebook Listing URL (Buy Now link)</label>
+            <input type="text" id="pLink" placeholder="https://www.facebook.com/marketplace/item/..."/>
+          </div>
+        </div>
         <div class="form-group">
           <label>Description</label>
-          <textarea id="pDesc" placeholder="Product description..."></textarea>
+          <textarea id="pDesc" maxlength="5000" placeholder="Product description..."></textarea>
         </div>
         <div class="form-group">
-          <label>Buy Link (optional)</label>
-          <input type="text" id="pLink" placeholder="https://..."/>
-        </div>
-        <div class="form-group">
-          <label>Product Images — Admin Only</label>
-          <!-- Existing images with delete controls -->
-          <div id="adminImgList" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px"></div>
-          <!-- Upload zone -->
+          <label>Product Photos</label>
+          <div id="adminImgList" style="display:none;flex-wrap:wrap;gap:8px;margin-bottom:10px"></div>
           <div class="img-upload-zone" id="imgUploadZone" role="button" tabindex="0"
             onclick="openImagePicker()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openImagePicker()}">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin:0 auto;display:block;opacity:.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
@@ -707,12 +764,35 @@ footer{
         </div>
         <div class="form-actions">
           <button class="btn-save" onclick="saveProduct()">Save Product</button>
-          <button class="btn-reset" onclick="resetProductForm()">Reset</button>
+          <button class="btn-reset" onclick="resetProductForm()">Clear Form</button>
         </div>
       </div>
       <div class="admin-product-list">
-        <h3>Existing Products</h3>
+        <div class="admin-list-head">
+          <h3>Products <span id="adminProdCount"></span></h3>
+          <input type="search" id="adminSearch" class="admin-search" placeholder="Search products…" oninput="renderAdminList()"/>
+        </div>
         <div id="adminProdList"></div>
+      </div>
+    </div>
+
+    <!-- IMPORT TAB -->
+    <div class="admin-panel-section" id="adminImport">
+      <div class="admin-form" style="max-width:100%">
+        <h3 style="font-family:var(--font-head);font-size:.95rem;color:var(--cyan);margin-bottom:14px">Import Facebook Listings (CSV)</h3>
+        <ol class="import-help">
+          <li>Download the <a href="fb-import-template.csv" download>CSV template</a> and fill in one row per Facebook listing (a Meta Commerce Manager catalog export also works).</li>
+          <li>Put photo links in the <code>photos</code> column, separated by <code>|</code>. They’re downloaded into the website when you publish — publish soon after, since Facebook photo links expire.</li>
+          <li>Re-importing is safe: rows with the same Facebook URL (or same title) update the existing product instead of duplicating it. Photos already on the site are kept.</li>
+        </ol>
+        <div class="img-upload-zone" id="csvZone" role="button" tabindex="0"
+          onclick="document.getElementById('csvInput').click()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();document.getElementById('csvInput').click()}">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin:0 auto;display:block;opacity:.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/></svg>
+          <p>Choose a CSV file or drag it here</p>
+          <small>You’ll see a preview before anything changes</small>
+        </div>
+        <input type="file" id="csvInput" accept=".csv,.tsv,text/csv" style="display:none" onchange="handleCsvFile(this.files[0]);this.value=''"/>
+        <div id="importPreview"></div>
       </div>
     </div>
   </div>
@@ -770,44 +850,43 @@ footer{
 
 <script>
 /* ═══════════════════════════════════════════════════
-   DATA
+   DATA & CONFIG
+   Products live in products.json (published from the admin panel).
 ═══════════════════════════════════════════════════ */
 const FB_URL = 'https://www.facebook.com/share/1Cs6QVY4P3/?mibextid=wwXIfr';
 
-const CATS = ['All','Bathroom','Outdoor Lighting','Home Décor','Wellness','Kitchen','Electronic','Bedroom','Other'];
+// Cloudflare Worker that logs admins in and publishes changes to GitHub (see SETUP.md)
+const API_BASE = 'https://silentlogos-api.wareplatform.com';
 
-const DEFAULT_PRODUCTS = [
-  {
-    id:'p1', name:'LED Hollywood Vanity Mirror', cat:'Bathroom', price:'$49.99',
-    tag:'hot', desc:'Professional Hollywood-style vanity mirror with 12 dimmable LED bulbs. Touch control, USB charging port, 3 color modes. Perfect for makeup and grooming routines.',
-    link: FB_URL, imgs:[]
-  },
-  {
-    id:'p2', name:'Solar Garden Path Lights (8-Pack)', cat:'Outdoor Lighting', price:'$34.99',
-    tag:'new', desc:'Waterproof IP65 solar-powered pathway lights. Auto on/off dusk-to-dawn, warm white glow. No wiring needed — simply stake into ground.',
-    link: FB_URL, imgs:[]
-  },
-  {
-    id:'p3', name:'Ultrasonic Aroma Diffuser', cat:'Wellness', price:'$27.99',
-    tag:'', desc:'7-color LED ultrasonic essential oil diffuser. Whisper-quiet, auto shut-off, covers up to 300 sq ft. Comes with 4 aromatherapy oils.',
-    link: FB_URL, imgs:[]
-  },
-  {
-    id:'p4', name:'Smart RGB LED Desk Lamp', cat:'Electronic', price:'$39.99',
-    tag:'hot', desc:'App-controlled RGB desk lamp with 16M colors, touch dimmer, USB-C charging, and memory function. Works with Alexa & Google Home.',
-    link: FB_URL, imgs:[]
-  },
-  {
-    id:'p5', name:'Bamboo Kitchen Herb Garden Kit', cat:'Kitchen', price:'$22.99',
-    tag:'new', desc:'Grow your own herbs indoors! Includes 6 biodegradable pots, premium soil discs, organic seeds (basil, mint, cilantro, thyme, rosemary, chives).',
-    link: FB_URL, imgs:[]
-  },
-  {
-    id:'p6', name:'Himalayan Salt Crystal Lamp', cat:'Bedroom', price:'$31.99',
-    tag:'sale', desc:'Authentic hand-carved Himalayan salt lamp with warm amber glow. Natural air purifier, reduces EMF, promotes relaxation. Includes dimmer switch.',
-    link: FB_URL, imgs:[]
-  },
-];
+const BASE_CATS = ['Bathroom','Outdoor Lighting','Home Décor','Wellness','Kitchen','Electronic','Bedroom'];
+const TAGS = ['hot','new','sale'];
+
+function escapeHTML(v){
+  return String(v ?? '').replace(/[&<>"']/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+}
+function parsePrice(v){
+  if(typeof v==='number') return Number.isFinite(v) ? Math.round(v*100)/100 : NaN;
+  const n = parseFloat(String(v ?? '').replace(/[^0-9.]/g,''));
+  return Number.isFinite(n) ? Math.round(n*100)/100 : NaN;
+}
+function formatPrice(n){ return Number.isFinite(n) ? '$' + n.toFixed(2) : ''; }
+function safeUrl(u){ u = String(u || '').trim(); return /^https?:\/\//i.test(u) ? u : ''; }
+function isImgSrc(s){ return typeof s==='string' && /^(data:image\/|https?:\/\/|images\/)/i.test(s); }
+function newId(){ return 'p' + Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
+
+function normalizeProduct(p){
+  return {
+    id: String(p.id || '').replace(/[^A-Za-z0-9_-]/g,'') || newId(),
+    name: String(p.name || '').trim(),
+    price: parsePrice(p.price),
+    cat: String(p.cat || '').trim() || 'Other',
+    tag: TAGS.includes(p.tag) ? p.tag : '',
+    status: p.status === 'sold' ? 'sold' : 'active',
+    desc: String(p.desc || '').trim(),
+    link: safeUrl(p.link),
+    imgs: (Array.isArray(p.imgs) ? p.imgs : []).filter(isImgSrc)
+  };
+}
 
 /* ═══════════════════════════════════════════════════
    STARS CANVAS
@@ -851,24 +930,42 @@ const DEFAULT_PRODUCTS = [
 /* ═══════════════════════════════════════════════════
    PRODUCTS
 ═══════════════════════════════════════════════════ */
-let products = JSON.parse(localStorage.getItem('sl1882_products')||'null') || DEFAULT_PRODUCTS;
+let products = [];
+let publishedSnapshot = '[]';   // JSON of what's live on the website
+let productsLoaded = false;
+let productsLoadError = false;
 let activeCat = 'All';
+// Freshly published photos: repo path -> local copy, so they show before GitHub Pages finishes rebuilding
+const imgCache = {};
+function resolveImg(src){ return imgCache[src] || src; }
 
-function saveProducts(){
+async function loadProducts(){
   try{
-    localStorage.setItem('sl1882_products', JSON.stringify(products));
-    return true;
+    const r = await fetch('products.json?v=' + Date.now(), { cache:'no-store' });
+    if(!r.ok) throw new Error('HTTP ' + r.status);
+    const data = await r.json();
+    products = (Array.isArray(data) ? data : (data.products || [])).map(normalizeProduct);
+    productsLoadError = false;
   }catch(err){
-    console.error('Save failed:', err);
-    showToast('Storage is full — remove some photos and try again.');
-    return false;
+    console.error('Could not load products.json', err);
+    products = [];
+    productsLoadError = true;
   }
+  publishedSnapshot = JSON.stringify(products);
+  productsLoaded = true;
+  if(isAdmin()) restoreDraft();
+  refreshAll();
+}
+
+function getCats(){
+  const extra = [...new Set(products.map(p=>p.cat))].filter(c=>c && !BASE_CATS.includes(c) && c!=='Other');
+  return ['All', ...BASE_CATS, ...extra, 'Other'];
 }
 
 function buildCatBar(){
   const bar = document.getElementById('catBar');
   bar.innerHTML = '';
-  CATS.forEach(c=>{
+  getCats().forEach(c=>{
     const btn = document.createElement('button');
     btn.className = 'cat-btn' + (c===activeCat?' active':'');
     btn.textContent = c;
@@ -879,51 +976,61 @@ function buildCatBar(){
 
 function renderProducts(){
   const grid = document.getElementById('prodGrid');
-  const list = activeCat==='All' ? products : products.filter(p=>p.cat===activeCat);
-  if(!list.length){ grid.innerHTML='<p style="color:var(--text2);font-family:var(--font-mono);font-size:.8rem;text-align:center;grid-column:1/-1">No products in this category yet.</p>'; return; }
-  grid.innerHTML = list.map(p=>prodCardHTML(p)).join('');
+  const msg = t => `<p style="color:var(--text2);font-family:var(--font-mono);font-size:.8rem;text-align:center;grid-column:1/-1">${t}</p>`;
+  if(!productsLoaded){ grid.innerHTML = msg('Loading products…'); return; }
+  if(productsLoadError && !products.length){ grid.innerHTML = msg('Products couldn’t load. Please refresh the page.'); return; }
+  let list = activeCat==='All' ? products : products.filter(p=>p.cat===activeCat);
+  list = [...list.filter(p=>p.status!=='sold'), ...list.filter(p=>p.status==='sold')]; // sold items last
+  if(!list.length){ grid.innerHTML = msg('No products in this category yet.'); return; }
+  grid.innerHTML = list.map(prodCardHTML).join('');
   attachAlbumListeners();
 }
 
 function prodCardHTML(p){
-  const imgs = Array.isArray(p.imgs) ? p.imgs : [];
-  const mainImg = imgs[0] || '';
-  const tagHTML = p.tag ? `<span class="prod-tag ${p.tag}">${p.tag.toUpperCase()}</span>` : '';
+  const imgs = p.imgs.map(resolveImg);
+  const sold = p.status === 'sold';
+  const name = escapeHTML(p.name);
+  const tagHTML = sold
+    ? '<span class="prod-tag sold">SOLD</span>'
+    : (p.tag ? `<span class="prod-tag ${p.tag}">${p.tag.toUpperCase()}</span>` : '');
 
-  // PUBLIC view: thumbnails only for browsing — no upload, no delete buttons
   const thumbsHTML = imgs.length > 1
     ? imgs.map((src,i)=>`
         <div class="album-thumb-wrap">
-          <img class="album-thumb${i===0?' active':''}" src="${src}" alt="Photo ${i+1}" data-prod="${p.id}" data-idx="${i}"/>
+          <img class="album-thumb${i===0?' active':''}" src="${escapeHTML(src)}" alt="Photo ${i+1}" data-prod="${p.id}" data-idx="${i}" loading="lazy" referrerpolicy="no-referrer" onerror="this.parentNode.remove()"/>
         </div>`).join('')
     : '';
 
-  const mainSection = mainImg
-    ? `<img class="prod-main-img" src="${mainImg}" alt="${p.name}" data-prod="${p.id}"/>`
+  const mainSection = imgs[0]
+    ? `<img class="prod-main-img" src="${escapeHTML(imgs[0])}" alt="${name}" data-prod="${p.id}" loading="lazy" referrerpolicy="no-referrer" onerror="this.classList.add('broken')"/>`
     : `<div class="prod-main-placeholder">
         <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
         <span>No photo yet</span>
       </div>`;
 
+  const buyHTML = sold
+    ? '<span class="prod-buy disabled" aria-disabled="true">Sold</span>'
+    : `<a class="prod-buy" href="${escapeHTML(p.link || FB_URL)}" target="_blank" rel="noopener">Buy Now</a>`;
+
   return `
-  <div class="prod-card reveal">
+  <div class="prod-card reveal${sold?' is-sold':''}">
     <div class="prod-album">
       ${mainSection}
       ${imgs.length > 1 ? `<div class="album-thumbs">${thumbsHTML}</div>` : ''}
     </div>
     <div class="prod-body">
       ${tagHTML}
-      <div class="prod-cat">${p.cat.toUpperCase()}</div>
-      <div class="prod-name">${p.name}</div>
-      <div class="prod-price">${p.price}</div>
+      <div class="prod-cat">${escapeHTML(p.cat.toUpperCase())}</div>
+      <div class="prod-name">${name}</div>
+      <div class="prod-price">${formatPrice(p.price)}</div>
       <button class="prod-desc-btn" onclick="toggleDesc(this)" aria-expanded="false">
         <span>Description</span>
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
       </button>
-      <div class="prod-desc">${p.desc}</div>
+      <div class="prod-desc">${escapeHTML(p.desc)}</div>
       <div class="prod-footer">
-        <a class="prod-buy" href="${p.link||FB_URL}" target="_blank">Buy Now</a>
-        <a class="prod-fb" href="${FB_URL}" target="_blank">
+        ${buyHTML}
+        <a class="prod-fb" href="${FB_URL}" target="_blank" rel="noopener">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
           FB
         </a>
@@ -931,7 +1038,6 @@ function prodCardHTML(p){
     </div>
   </div>`;
 }
-
 
 function attachAlbumListeners(){
   // Thumbnail click → swap main image (view only — no editing on public page)
@@ -957,58 +1063,249 @@ function toggleDesc(btn){
 }
 
 /* ═══════════════════════════════════════════════════
-   ADMIN
+   ADMIN — login, drafts & publishing
+   Edits are kept as a draft in this browser until you press
+   "Publish to website", which sends them to the Worker → GitHub.
 ═══════════════════════════════════════════════════ */
+const TOKEN_KEY = 'sl1882_token';
+const DRAFT_KEY = 'sl1882_draft';
+const LEGACY_KEY = 'sl1882_products';   // old browser-only storage
+let publishing = false;
+
+function getToken(){
+  const t = sessionStorage.getItem(TOKEN_KEY);
+  if(!t) return null;
+  if(Date.now() > Number(t.split('.')[0])){ sessionStorage.removeItem(TOKEN_KEY); return null; }
+  return t;
+}
+function isAdmin(){ return !!getToken(); }
+
+async function apiFetch(path, opts = {}){
+  const headers = { 'Content-Type':'application/json' };
+  const t = getToken();
+  if(t) headers.Authorization = 'Bearer ' + t;
+  let r;
+  try{ r = await fetch(API_BASE + path, { ...opts, headers }); }
+  catch(e){ const err = new Error('Can’t reach the admin server — check your connection.'); err.status = 0; throw err; }
+  let data = {};
+  try{ data = await r.json(); }catch(e){}
+  if(!r.ok){ const err = new Error(data.error || ('HTTP ' + r.status)); err.status = r.status; throw err; }
+  return data;
+}
+
+function isDirty(){ return JSON.stringify(products) !== publishedSnapshot; }
+
+function countChanges(){
+  const live = JSON.parse(publishedSnapshot);
+  const liveById = new Map(live.map(p=>[p.id, JSON.stringify(p)]));
+  const ids = new Set(products.map(p=>p.id));
+  let n = live.filter(p=>!ids.has(p.id)).length;                       // deleted
+  products.forEach(p=>{ if(liveById.get(p.id) !== JSON.stringify(p)) n++; }); // added or edited
+  return n;
+}
+
+function saveDraft(){
+  try{
+    if(isDirty()) localStorage.setItem(DRAFT_KEY, JSON.stringify({ savedAt: Date.now(), products }));
+    else localStorage.removeItem(DRAFT_KEY);
+  }catch(e){
+    showToast('Draft is too large to back up in this browser — publish soon so changes aren’t lost.');
+  }
+}
+
+function restoreDraft(){
+  try{
+    const legacy = JSON.parse(localStorage.getItem(LEGACY_KEY) || 'null');
+    if(legacy && !localStorage.getItem(DRAFT_KEY)){
+      localStorage.setItem(DRAFT_KEY, JSON.stringify({ savedAt: Date.now(), products: legacy }));
+    }
+    localStorage.removeItem(LEGACY_KEY);
+  }catch(e){}
+  try{
+    const d = JSON.parse(localStorage.getItem(DRAFT_KEY) || 'null');
+    if(d && Array.isArray(d.products)) products = d.products.map(normalizeProduct);
+  }catch(e){}
+}
+
+function refreshAll(){
+  buildCatBar();
+  renderProducts();
+  renderAdminList();
+  populateCatSelect();
+  updatePublishBar();
+}
+
+function commitChange(msg){
+  saveDraft();
+  refreshAll();
+  if(msg) showToast(msg);
+}
+
+function updatePublishBar(){
+  const bar = document.getElementById('publishBar');
+  if(!bar) return;
+  const dirty = isDirty();
+  const n = dirty ? countChanges() : 0;
+  bar.classList.toggle('dirty', dirty);
+  document.getElementById('publishStatus').textContent = publishing
+    ? 'Publishing… (downloading photos & committing to GitHub)'
+    : dirty ? `${n} unpublished change${n===1?'':'s'} — only you can see ${n===1?'it':'them'}`
+            : 'Everything is live on the website';
+  const pub = document.getElementById('publishBtn');
+  pub.disabled = !dirty || publishing;
+  pub.textContent = publishing ? 'Publishing…' : 'Publish to website';
+  document.getElementById('discardBtn').disabled = !dirty || publishing;
+}
+
+async function publishChanges(){
+  if(publishing || !isDirty()) return;
+  if(imgUploadBusy){ showToast('Still processing photos — one moment…'); return; }
+  if(!isAdmin()){ showToast('Session expired — log in again (your changes are kept).'); openAdminGate(); return; }
+  publishing = true; updatePublishBar();
+  const sent = products;
+  try{
+    const res = await apiFetch('/api/admin/publish', { method:'POST', body: JSON.stringify({ products: sent }) });
+    // Show local copies of new photos until GitHub Pages serves them
+    res.products.forEach((p,i)=>{
+      const old = sent[i];
+      if(old && old.id===p.id) p.imgs.forEach((src,j)=>{ if(old.imgs[j] && old.imgs[j]!==src) imgCache[src] = old.imgs[j]; });
+    });
+    products = res.products.map(normalizeProduct);
+    publishedSnapshot = JSON.stringify(products);
+    localStorage.removeItem(DRAFT_KEY);
+    const fails = (res.failedPhotos || []).length;
+    commitChange(res.unchanged ? 'Nothing changed.'
+      : `Published! The live site updates in about a minute.` + (fails ? ` ${fails} photo${fails>1?'s':''} couldn’t be downloaded — see console.` : ''));
+    if(fails){
+      console.warn('Photos that could not be downloaded:', res.failedPhotos);
+    }
+  }catch(err){
+    if(err.status === 401){ sessionStorage.removeItem(TOKEN_KEY); showToast('Session expired — log in again (your changes are kept).'); openAdminGate(); }
+    else showToast('Publish failed: ' + err.message);
+  }finally{
+    publishing = false; updatePublishBar();
+  }
+}
+
+function discardDraft(){
+  if(!isDirty() || !confirm('Discard all unpublished changes?')) return;
+  products = JSON.parse(publishedSnapshot).map(normalizeProduct);
+  localStorage.removeItem(DRAFT_KEY);
+  resetProductForm();
+  commitChange('Changes discarded.');
+}
+
 function switchAdminTab(tab){
-  document.querySelectorAll('.admin-tab').forEach((t,i)=>{
-    const tabs=['products'];
-    t.classList.toggle('active',tabs[i]===tab);
-  });
-  document.getElementById('adminProducts').classList.toggle('active',tab==='products');
+  const tabs = ['products','import'];
+  document.querySelectorAll('.admin-tab').forEach((t,i)=>t.classList.toggle('active', tabs[i]===tab));
+  document.getElementById('adminProducts').classList.toggle('active', tab==='products');
+  document.getElementById('adminImport').classList.toggle('active', tab==='import');
+}
+
+/* ── Product list & form ─────────────────────────── */
+function populateCatSelect(selected){
+  const sel = document.getElementById('pCat');
+  if(!sel) return;
+  const cur = selected ?? sel.value;
+  const cats = getCats().filter(c=>c!=='All');
+  if(cur && !cats.includes(cur)) cats.splice(cats.length-1, 0, cur);
+  sel.innerHTML = cats.map(c=>`<option value="${escapeHTML(c)}">${escapeHTML(c)}</option>`).join('');
+  sel.value = cur && cats.includes(cur) ? cur : cats[0];
 }
 
 function renderAdminList(){
   const el = document.getElementById('adminProdList');
   if(!el) return;
-  el.innerHTML = products.map(p=>`
-    <div class="admin-prod-row">
-      ${p.imgs&&p.imgs[0]?`<img src="${p.imgs[0]}" alt="${p.name}"/>`:'<div style="width:48px;height:38px;background:var(--dark3);border-radius:4px;border:1px solid var(--border)"></div>'}
-      <div class="info"><div class="name">${p.name}</div><div class="cat">${p.cat} · ${p.price}</div></div>
+  const q = (document.getElementById('adminSearch')?.value || '').toLowerCase().trim();
+  const list = q ? products.filter(p=>(p.name+' '+p.cat).toLowerCase().includes(q)) : products;
+  document.getElementById('adminProdCount').textContent = `(${products.length})`;
+  el.innerHTML = list.map(p=>{
+    const img = p.imgs[0]
+      ? `<img src="${escapeHTML(resolveImg(p.imgs[0]))}" alt="" loading="lazy" referrerpolicy="no-referrer"/>`
+      : '<div style="width:48px;height:38px;background:var(--dark3);border-radius:4px;border:1px solid var(--border)"></div>';
+    const sold = p.status==='sold';
+    return `
+    <div class="admin-prod-row${sold?' is-sold':''}">
+      ${img}
+      <div class="info">
+        <div class="name">${escapeHTML(p.name)} ${sold?'<span class="status-pill">SOLD</span>':''}</div>
+        <div class="cat">${escapeHTML(p.cat)} · ${formatPrice(p.price)} · ${p.imgs.length} photo${p.imgs.length===1?'':'s'}</div>
+      </div>
       <div class="actions">
+        <button class="btn-edit" onclick="toggleSold('${p.id}')">${sold?'Mark available':'Mark sold'}</button>
         <button class="btn-edit" onclick="editProduct('${p.id}')">Edit</button>
         <button class="btn-del" onclick="deleteProduct('${p.id}')">Delete</button>
       </div>
-    </div>`).join('');
+    </div>`;
+  }).join('') || '<p style="color:var(--text2);font-size:.8rem;font-family:var(--font-mono)">No products match.</p>';
 }
 
 function saveProduct(){
+  if(imgUploadBusy){ showToast('Still processing photos — one moment…'); return; }
   const id = document.getElementById('editId').value;
   const name = document.getElementById('pName').value.trim();
-  const price = document.getElementById('pPrice').value.trim();
-  const cat = document.getElementById('pCat').value;
-  const tag = document.getElementById('pTag').value;
-  const desc = document.getElementById('pDesc').value.trim();
-  const link = document.getElementById('pLink').value.trim() || FB_URL;
-  const imgs = JSON.parse(document.getElementById('pImgs').value || '[]');
-  if(!name||!price){ showToast('Name and price are required.'); return; }
-  if(imgUploadBusy){ showToast('Still processing photos — one moment…'); return; }
-  const before = products.slice();
-  if(id){
-    const idx = products.findIndex(p=>p.id===id);
-    if(idx>-1) products[idx]={...products[idx],name,price,cat,tag,desc,link,imgs};
-  } else {
-    products.push({id:'p'+Date.now(),name,price,cat,tag,desc,link,imgs});
-  }
-  if(!saveProducts()){ products = before; return; }
-  renderProducts();
-  renderAdminList();
+  const price = parsePrice(document.getElementById('pPrice').value);
+  if(!name){ showToast('Product name is required.'); return; }
+  if(!Number.isFinite(price)){ showToast('Enter a valid price, e.g. 29.99'); return; }
+  const data = normalizeProduct({
+    id: id || newId(), name, price,
+    cat: document.getElementById('pCat').value,
+    tag: document.getElementById('pTag').value,
+    status: document.getElementById('pStatus').value,
+    desc: document.getElementById('pDesc').value,
+    link: document.getElementById('pLink').value,
+    imgs: getAdminImgs()
+  });
+  const idx = products.findIndex(p=>p.id===id);
+  if(idx > -1) products[idx] = data; else products.push(data);
   resetProductForm();
-  showToast('Product saved!');
+  commitChange('Saved — press “Publish to website” to make it live.');
 }
 
-/* Render the admin image list with per-image delete + "MAIN" badge.
-   Click a thumbnail to make it the main photo. */
-function getAdminImgs(){ return JSON.parse(document.getElementById('pImgs').value||'[]'); }
+function editProduct(id){
+  const p = products.find(x=>x.id===id);
+  if(!p) return;
+  document.getElementById('editId').value = p.id;
+  document.getElementById('pName').value = p.name;
+  document.getElementById('pPrice').value = Number.isFinite(p.price) ? p.price.toFixed(2) : '';
+  populateCatSelect(p.cat);
+  document.getElementById('pTag').value = p.tag || '';
+  document.getElementById('pStatus').value = p.status;
+  document.getElementById('pDesc').value = p.desc;
+  document.getElementById('pLink').value = p.link || '';
+  setAdminImgs(p.imgs);
+  renderAdminImgList();
+  document.getElementById('formTitle').textContent = 'Edit Product';
+  switchAdminTab('products');
+  document.querySelector('#adminProducts .admin-form').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+function toggleSold(id){
+  const p = products.find(x=>x.id===id);
+  if(!p) return;
+  p.status = p.status==='sold' ? 'active' : 'sold';
+  commitChange(`${p.name} marked ${p.status==='sold'?'sold':'available'}.`);
+}
+
+function deleteProduct(id){
+  if(!confirm('Delete this product?')) return;
+  products = products.filter(p=>p.id!==id);
+  if(document.getElementById('editId').value===id) resetProductForm();
+  commitChange('Product deleted.');
+}
+
+function resetProductForm(){
+  ['editId','pName','pPrice','pDesc','pLink'].forEach(i=>document.getElementById(i).value='');
+  document.getElementById('pTag').value = '';
+  document.getElementById('pStatus').value = 'active';
+  populateCatSelect(BASE_CATS[0]);
+  setAdminImgs([]);
+  renderAdminImgList();
+  document.getElementById('formTitle').textContent = 'Add Product';
+}
+
+/* ── Product photos ──────────────────────────────── */
+function getAdminImgs(){ return JSON.parse(document.getElementById('pImgs').value || '[]'); }
 function setAdminImgs(imgs){ document.getElementById('pImgs').value = JSON.stringify(imgs); }
 
 function renderAdminImgList(newFrom){
@@ -1017,7 +1314,7 @@ function renderAdminImgList(newFrom){
   if(!el) return;
   el.innerHTML = imgs.map((src,i)=>`
     <div class="admin-img-item${newFrom!=null && i>=newFrom ? ' fade-in' : ''}">
-      <img src="${src}" alt="Photo ${i+1}" onclick="adminSetMainImg(${i})" title="${i===0?'Main photo':'Click to make main photo'}"/>
+      <img src="${escapeHTML(resolveImg(src))}" alt="Photo ${i+1}" onclick="adminSetMainImg(${i})" title="${i===0?'Main photo':'Click to make main photo'}" referrerpolicy="no-referrer"/>
       ${i===0?'<span class="main-badge">MAIN</span>':''}
       <span class="del-img" onclick="adminDeleteImg(${i})" title="Remove photo">✕</span>
     </div>`).join('');
@@ -1039,9 +1336,7 @@ function adminSetMainImg(idx){
   renderAdminImgList();
 }
 
-/* Photos are resized + compressed in the browser before being stored.
-   Raw phone photos (3–8 MB each) would overflow localStorage (~5 MB total)
-   and the save would silently fail. */
+/* Photos are resized + compressed in the browser before upload. */
 const IMG_MAX_SIDE = 1400;
 const IMG_QUALITY  = 0.82;
 let imgUploadBusy = false;
@@ -1056,7 +1351,7 @@ function loadImageFromFile(file){
     const url = URL.createObjectURL(file);
     const img = new Image();
     img.onload = ()=>{ URL.revokeObjectURL(url); resolve(img); };
-    img.onerror = ()=>{ URL.revokeObjectURL(url); reject(new Error('Could not read '+file.name)); };
+    img.onerror = ()=>{ URL.revokeObjectURL(url); reject(new Error('Could not read ' + file.name)); };
     img.src = url;
   });
 }
@@ -1068,7 +1363,7 @@ async function compressImage(file){
   const canvas = document.createElement('canvas');
   canvas.width = w; canvas.height = h;
   const ctx = canvas.getContext('2d');
-  ctx.fillStyle = '#ffffff';            // JPEG has no transparency — use a white background
+  ctx.fillStyle = '#ffffff';   // JPEG has no transparency — use a white background
   ctx.fillRect(0,0,w,h);
   ctx.drawImage(img,0,0,w,h);
   return canvas.toDataURL('image/jpeg', IMG_QUALITY);
@@ -1076,19 +1371,16 @@ async function compressImage(file){
 
 function setUploadBusy(busy, text){
   imgUploadBusy = busy;
-  const zone = document.getElementById('imgUploadZone');
+  document.getElementById('imgUploadZone')?.classList.toggle('busy', busy);
   const label = document.getElementById('imgUploadText');
-  if(zone) zone.classList.toggle('busy', busy);
   if(label) label.textContent = text || 'Click, drag & drop, or paste photos';
 }
 
 async function adminAddImages(fileList){
   if(imgUploadBusy) return;
-  const files = Array.from(fileList||[]).filter(f=>f.type.startsWith('image/') || /\.(jpe?g|png|webp|gif|heic|heif)$/i.test(f.name));
+  const files = Array.from(fileList || []).filter(f=>f.type.startsWith('image/') || /\.(jpe?g|png|webp|gif|heic|heif)$/i.test(f.name));
   if(!files.length){ showToast('Please choose image files (JPG, PNG, WebP).'); return; }
-
   const imgs = getAdminImgs();
-  const startLen = imgs.length;
   let added = 0, failed = 0;
   for(let i=0;i<files.length;i++){
     setUploadBusy(true, `Processing ${i+1} of ${files.length}…`);
@@ -1096,102 +1388,219 @@ async function adminAddImages(fileList){
       imgs.push(await compressImage(files[i]));
       added++;
       setAdminImgs(imgs);
-      renderAdminImgList(imgs.length-1);   // show each photo as soon as it's ready
-    }catch(err){
-      console.warn(err);
-      failed++;
-    }
+      renderAdminImgList(imgs.length-1);
+    }catch(err){ console.warn(err); failed++; }
   }
   setUploadBusy(false);
-
-  if(added){
-    showToast(`${added} photo${added>1?'s':''} added — click "Save Product" to keep ${added>1?'them':'it'}.`
-      + (failed ? ` (${failed} couldn't be read)` : ''));
-  }else{
-    showToast(`Couldn't read ${failed>1?'those files':'that file'}. Try JPG or PNG.`);
-  }
+  if(added) showToast(`${added} photo${added>1?'s':''} added — click “Save Product” to keep ${added>1?'them':'it'}.` + (failed ? ` (${failed} couldn’t be read)` : ''));
+  else showToast(`Couldn’t read ${failed>1?'those files':'that file'}. Try JPG or PNG.`);
 }
 
-/* Drag & drop and paste support for the upload zone */
-function initImageUploadZone(){
+function makeDropZone(zone, onFiles){
+  ['dragenter','dragover'].forEach(ev=>zone.addEventListener(ev,e=>{ e.preventDefault(); zone.classList.add('dragover'); }));
+  ['dragleave','dragend','drop'].forEach(ev=>zone.addEventListener(ev,e=>{ e.preventDefault(); zone.classList.remove('dragover'); }));
+  zone.addEventListener('drop', e=>onFiles(e.dataTransfer.files));
+}
+
+function initAdminUploads(){
   const zone = document.getElementById('imgUploadZone');
-  if(!zone) return;
-  ['dragenter','dragover'].forEach(ev=>zone.addEventListener(ev,e=>{
-    e.preventDefault(); if(!imgUploadBusy) zone.classList.add('dragover');
-  }));
-  ['dragleave','dragend','drop'].forEach(ev=>zone.addEventListener(ev,e=>{
-    e.preventDefault(); zone.classList.remove('dragover');
-  }));
-  zone.addEventListener('drop',e=>adminAddImages(e.dataTransfer.files));
-  // Paste screenshots/images while the admin panel is open
-  document.addEventListener('paste',e=>{
+  if(zone) makeDropZone(zone, files=>{ if(!imgUploadBusy) adminAddImages(files); });
+  const csvZone = document.getElementById('csvZone');
+  if(csvZone) makeDropZone(csvZone, files=>handleCsvFile(files[0]));
+  // Paste images while the Products tab is open
+  document.addEventListener('paste', e=>{
     if(!document.getElementById('admin').classList.contains('active')) return;
-    const files = Array.from(e.clipboardData?.files||[]).filter(f=>f.type.startsWith('image/'));
+    if(!document.getElementById('adminProducts').classList.contains('active')) return;
+    const files = Array.from(e.clipboardData?.files || []).filter(f=>f.type.startsWith('image/'));
     if(files.length){ e.preventDefault(); adminAddImages(files); }
   });
-  // Stop the browser from opening a file if it's dropped just outside the zone
+  // Don't let the browser open a file dropped just outside a zone
   ['dragover','drop'].forEach(ev=>window.addEventListener(ev,e=>{
-    if(e.dataTransfer && Array.from(e.dataTransfer.types||[]).includes('Files')) e.preventDefault();
+    if(e.dataTransfer && Array.from(e.dataTransfer.types || []).includes('Files')) e.preventDefault();
   }));
-}
-
-function editProduct(id){
-  const p = products.find(x=>x.id===id);
-  if(!p) return;
-  document.getElementById('editId').value=p.id;
-  document.getElementById('pName').value=p.name;
-  document.getElementById('pPrice').value=p.price;
-  document.getElementById('pCat').value=p.cat;
-  document.getElementById('pTag').value=p.tag||'';
-  document.getElementById('pDesc').value=p.desc;
-  document.getElementById('pLink').value=p.link||'';
-  document.getElementById('pImgs').value=JSON.stringify(p.imgs||[]);
-  renderAdminImgList();
-  openAdminPanel();
-}
-
-function deleteProduct(id){
-  if(!confirm('Delete this product?')) return;
-  products=products.filter(p=>p.id!==id);
-  saveProducts();
-  renderProducts();
-  renderAdminList();
-  showToast('Product deleted.');
-}
-
-function resetProductForm(){
-  document.getElementById('editId').value='';
-  document.getElementById('pName').value='';
-  document.getElementById('pPrice').value='';
-  document.getElementById('pDesc').value='';
-  document.getElementById('pLink').value='';
-  document.getElementById('pImgs').value='[]';
-  renderAdminImgList();
 }
 
 /* ═══════════════════════════════════════════════════
-   ADMIN PASSWORD GATE
+   FACEBOOK LISTINGS IMPORT (CSV)
+   Works with the template (fb-import-template.csv) and with
+   Meta Commerce Manager catalog exports (title, price, image_link…).
 ═══════════════════════════════════════════════════ */
-// Password stored as a simple hash to avoid plain text in source
-const _ADMIN_HASH = (()=>{
-  // sha-256 lite: djb2 hash — good enough for a static site gate
-  const pw = '18820101';
-  let h = 5381;
-  for(let i=0;i<pw.length;i++) h = ((h<<5)+h)+pw.charCodeAt(i);
-  return (h >>> 0).toString(16);
-})();
+let pendingImport = null;
 
-function _hashInput(str){
-  let h = 5381;
-  for(let i=0;i<str.length;i++) h = ((h<<5)+h)+str.charCodeAt(i);
-  return (h >>> 0).toString(16);
+function parseCSV(text){
+  text = text.replace(/^\uFEFF/, '');
+  const first = text.split(/\r?\n/, 1)[0];
+  const delim = [',', '\t', ';'].reduce((a,b)=> first.split(b).length > first.split(a).length ? b : a);
+  const rows = []; let row = [], field = '', q = false;
+  for(let i=0;i<text.length;i++){
+    const c = text[i];
+    if(q){
+      if(c==='"'){ if(text[i+1]==='"'){ field+='"'; i++; } else q = false; }
+      else field += c;
+    }
+    else if(c==='"') q = true;
+    else if(c===delim){ row.push(field); field=''; }
+    else if(c==='\n' || c==='\r'){ if(c==='\r' && text[i+1]==='\n') i++; row.push(field); rows.push(row); row=[]; field=''; }
+    else field += c;
+  }
+  if(field!=='' || row.length){ row.push(field); rows.push(row); }
+  return rows.filter(r=>r.some(v=>v.trim()!==''));
 }
 
-function openAdminGate(){
-  // If already authenticated this session, open directly
-  if(sessionStorage.getItem('sl1882_auth')==='1'){
-    openAdminPanel(); return;
+const IMPORT_COLUMNS = {
+  name:   ['title','name','product','product name','listing title','item'],
+  price:  ['price','amount','sale price','listing price'],
+  cat:    ['category','cat','product type','google product category'],
+  desc:   ['description','desc','details'],
+  link:   ['facebook url','facebook link','fb url','listing url','listing link','url','link','marketplace url'],
+  status: ['status','availability','sold'],
+  tag:    ['tag','label']
+};
+const PHOTO_COL = /^(photos?|images?|photo urls?|image urls?|image link|additional image links?|photo \d+|image \d+)$/;
+
+function listingKey(link){
+  const m = String(link||'').match(/marketplace\/item\/(\d+)/);
+  if(m) return 'fb:' + m[1];
+  const u = safeUrl(link);
+  return u && u !== FB_URL ? 'url:' + u.split(/[?#]/)[0].replace(/\/$/,'').toLowerCase() : '';
+}
+
+function matchCategory(raw){
+  const v = String(raw||'').trim();
+  if(!v) return 'Other';
+  const known = getCats().find(c=>c.toLowerCase()===v.toLowerCase());
+  return known && known!=='All' ? known : v.slice(0,60);
+}
+
+function parseStatus(raw){
+  return /sold|out of stock|unavailable|discontinued|^yes$|^true$/i.test(String(raw||'').trim()) ? 'sold' : 'active';
+}
+
+function buildImport(rows){
+  const header = rows[0].map(h=>h.trim().toLowerCase().replace(/[_\-]+/g,' ').replace(/\s+/g,' '));
+  const col = {};
+  for(const [field, names] of Object.entries(IMPORT_COLUMNS)){
+    const i = header.findIndex(h=>names.includes(h));
+    if(i > -1) col[field] = i;
   }
+  const photoCols = header.map((h,i)=>PHOTO_COL.test(h)?i:-1).filter(i=>i>-1);
+  if(col.name==null || col.price==null) throw new Error('The CSV needs at least a "title" and a "price" column.');
+
+  const byKey = new Map(), byName = new Map();
+  products.forEach(p=>{ const k = listingKey(p.link); if(k) byKey.set(k,p); byName.set(p.name.toLowerCase(), p); });
+
+  const items = [];
+  const seen = new Set();
+  rows.slice(1).forEach((r,ri)=>{
+    const get = f => col[f]!=null ? String(r[col[f]]||'').trim() : '';
+    const name = get('name');
+    const price = parsePrice(get('price'));
+    const photos = photoCols.flatMap(i=>String(r[i]||'').split(/[\s|,]+/)).map(s=>s.trim()).filter(s=>/^https?:\/\//i.test(s));
+    const row = {
+      line: ri + 2, name, price,
+      cat: get('cat') ? matchCategory(get('cat')) : '',
+      desc: get('desc'), link: safeUrl(get('link')),
+      status: col.status!=null ? parseStatus(get('status')) : '',
+      tag: TAGS.includes(get('tag').toLowerCase()) ? get('tag').toLowerCase() : '',
+      photos: [...new Set(photos)].slice(0,20)
+    };
+    if(!name){ items.push({ ...row, action:'skip', reason:'No title' }); return; }
+    if(!Number.isFinite(price)){ items.push({ ...row, action:'skip', reason:'No valid price' }); return; }
+    const key = listingKey(row.link) || 'name:' + name.toLowerCase();
+    if(seen.has(key)){ items.push({ ...row, action:'skip', reason:'Duplicate row' }); return; }
+    seen.add(key);
+    const existing = (listingKey(row.link) && byKey.get(listingKey(row.link))) || byName.get(name.toLowerCase());
+    items.push({ ...row, action: existing ? 'update' : 'new', target: existing ? existing.id : null });
+  });
+  return items;
+}
+
+async function handleCsvFile(file){
+  if(!file) return;
+  if(!/\.(csv|tsv|txt)$/i.test(file.name) && !/csv|text/.test(file.type)){ showToast('Please choose a .csv file.'); return; }
+  try{
+    const rows = parseCSV(await file.text());
+    if(rows.length < 2) throw new Error('That file has no listings in it.');
+    pendingImport = buildImport(rows);
+    renderImportPreview(file.name);
+  }catch(err){
+    pendingImport = null;
+    document.getElementById('importPreview').innerHTML = '';
+    showToast(err.message);
+  }
+}
+
+function renderImportPreview(fileName){
+  const items = pendingImport;
+  const c = a => items.filter(i=>i.action===a).length;
+  const nNew = c('new'), nUpd = c('update'), nSkip = c('skip');
+  const label = { new:'New', update:'Update', skip:'Skip' };
+  document.getElementById('importPreview').innerHTML = `
+    <div class="import-summary">
+      <strong>${escapeHTML(fileName)}</strong> —
+      <span class="imp-new">${nNew} new</span> ·
+      <span class="imp-upd">${nUpd} update${nUpd===1?'':'s'}</span> ·
+      <span class="imp-skip">${nSkip} skipped</span>
+    </div>
+    <div class="import-table-wrap">
+      <table class="import-table">
+        <thead><tr><th>Row</th><th>Action</th><th>Title</th><th>Price</th><th>Category</th><th>Photos</th><th>Status</th></tr></thead>
+        <tbody>${items.map(i=>`
+          <tr class="act-${i.action}">
+            <td>${i.line}</td>
+            <td>${label[i.action]}${i.reason?`<br><small>${escapeHTML(i.reason)}</small>`:''}</td>
+            <td>${escapeHTML(i.name) || '—'}</td>
+            <td>${formatPrice(i.price) || '—'}</td>
+            <td>${escapeHTML(i.cat) || '—'}</td>
+            <td>${i.photos.length}</td>
+            <td>${i.status ? i.status : '—'}</td>
+          </tr>`).join('')}</tbody>
+      </table>
+    </div>
+    <div class="form-actions">
+      <button class="btn-save" onclick="applyImport()" ${nNew+nUpd ? '' : 'disabled'}>Import ${nNew+nUpd} listing${nNew+nUpd===1?'':'s'}</button>
+      <button class="btn-reset" onclick="cancelImport()">Cancel</button>
+    </div>`;
+}
+
+function applyImport(){
+  if(!pendingImport) return;
+  let added = 0, updated = 0;
+  for(const i of pendingImport){
+    if(i.action==='new'){
+      products.push(normalizeProduct({
+        id: newId(), name: i.name, price: i.price, cat: i.cat || 'Other', desc: i.desc,
+        link: i.link || FB_URL, status: i.status || 'active', tag: i.tag, imgs: i.photos
+      }));
+      added++;
+    }else if(i.action==='update'){
+      const p = products.find(x=>x.id===i.target);
+      if(!p) continue;
+      p.name = i.name; p.price = i.price;
+      if(i.cat) p.cat = i.cat;
+      if(i.desc) p.desc = i.desc;
+      if(i.link) p.link = i.link;
+      if(i.status) p.status = i.status;
+      if(i.tag) p.tag = i.tag;
+      if(!p.imgs.length && i.photos.length) p.imgs = i.photos;   // keep photos already on the site
+      updated++;
+    }
+  }
+  cancelImport();
+  switchAdminTab('products');
+  commitChange(`Imported ${added} new, updated ${updated}. Review, then “Publish to website”.`);
+}
+
+function cancelImport(){
+  pendingImport = null;
+  document.getElementById('importPreview').innerHTML = '';
+}
+
+/* ═══════════════════════════════════════════════════
+   ADMIN LOGIN (checked by the Worker — no password in this file)
+═══════════════════════════════════════════════════ */
+function openAdminGate(){
+  if(isAdmin()){ openAdminPanel(); return; }
   document.getElementById('adminPwInput').value='';
   document.getElementById('adminPwErr').textContent='';
   document.getElementById('adminGate').classList.add('open');
@@ -1204,27 +1613,43 @@ function closeAdminGate(){
   document.getElementById('adminPwErr').textContent='';
 }
 
-function adminLogin(){
-  const val = document.getElementById('adminPwInput').value;
-  if(_hashInput(val)===_ADMIN_HASH){
-    sessionStorage.setItem('sl1882_auth','1');
+let loggingIn = false;
+async function adminLogin(){
+  if(loggingIn) return;
+  const inp = document.getElementById('adminPwInput');
+  const errEl = document.getElementById('adminPwErr');
+  const btn = document.querySelector('.btn-gate-enter');
+  if(!inp.value){ inp.focus(); return; }
+  loggingIn = true; btn.disabled = true; btn.textContent = 'Checking…'; errEl.textContent = '';
+  try{
+    const res = await apiFetch('/api/admin/login', { method:'POST', body: JSON.stringify({ password: inp.value }) });
+    sessionStorage.setItem(TOKEN_KEY, res.token);
     closeAdminGate();
+    if(productsLoaded && !isDirty()){ restoreDraft(); refreshAll(); }
     openAdminPanel();
-  } else {
-    const inp = document.getElementById('adminPwInput');
-    document.getElementById('adminPwErr').textContent='Incorrect password. Try again.';
-    inp.classList.remove('shake');
-    void inp.offsetWidth; // reflow to restart animation
-    inp.classList.add('shake');
-    inp.value='';
-    setTimeout(()=>inp.focus(),50);
+  }catch(err){
+    errEl.textContent = err.status===401 ? 'Incorrect password. Try again.' : err.message;
+    inp.classList.remove('shake'); void inp.offsetWidth; inp.classList.add('shake');
+    inp.value=''; setTimeout(()=>inp.focus(),50);
+  }finally{
+    loggingIn = false; btn.disabled = false; btn.textContent = 'Enter';
   }
 }
 
 function openAdminPanel(){
   document.getElementById('admin').classList.add('active');
+  updatePublishBar();
   window.scrollTo({top:document.getElementById('admin').offsetTop-80,behavior:'smooth'});
 }
+
+function closeAdminPanel(){
+  if(isDirty()) showToast('You have unpublished changes — they’re saved in this browser until you publish.');
+  document.getElementById('admin').classList.remove('active');
+}
+
+window.addEventListener('beforeunload', e=>{
+  if(publishing || (isAdmin() && isDirty() && !localStorage.getItem(DRAFT_KEY))){ e.preventDefault(); e.returnValue=''; }
+});
 
 /* ═══════════════════════════════════════════════════
    TOAST
@@ -1429,10 +1854,10 @@ function toggleMusic(){
    INIT
 ═══════════════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded',()=>{
-  buildCatBar();
-  renderProducts();
-  renderAdminList();
-  initImageUploadZone();
+  renderProducts();          // shows "Loading products…"
+  populateCatSelect(BASE_CATS[0]);
+  initAdminUploads();
+  loadProducts();
   observeReveal();
 
   // Nav active highlight on scroll

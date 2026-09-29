@@ -12,35 +12,29 @@
 
 | File | Description |
 |------|-------------|
-| `index.html` | The entire website — styles, scripts, and content all in one file |
+| `index.html` | The website — styles, scripts, and layout |
+| `products.json` | Product catalog |
 | `README.md` | This file |
 
 ---
 
-## Products Featured
+## How Products Work
 
-- 🚽 **Topseat Magnetic Toilet Seats** — quick-release, slow-close bathroom upgrade
-- 🏮 **Solar Lanterns & Garden Lamps** — auto on/off, no wiring needed
-- 🐾 **Hollow Projection Night Lamp** — casts paw print patterns on walls & ceilings
-- 🌿 **doTERRA PastTense Stick** — natural essential oil tension relief
-- 🔔 **4pcs Vintage Gold Cowbells** — rustic farmhouse & holiday décor
-- 🍴 **Stainless Cutlery Set** — mirror-polished, dishwasher safe
+Products are stored in **`products.json`** and photos in **`images/`**. Don't edit them by hand —
+use the **Admin Panel** (footer → Admin Panel):
 
----
+1. Add/edit products, upload photos, or **Import from Facebook** (CSV).
+2. Press **Publish to website** — the admin Worker commits the changes to this repo and
+   GitHub Pages updates the site in about a minute.
 
-## How to Edit
+Setup of the admin Worker (`silentlogos1882-worker`) is in its `SETUP.md`.
 
-Everything lives in `index.html`. Open it in any text editor (VS Code recommended).
-
-**To update a product card**, search for the product name and edit:
-- The emoji icon in `prod-img-wrap`
-- The category label in `prod-cat`
-- The product name in `prod-name`
-- The description in `prod-desc`
-- The price in `prod-price`
-- The link `href` in `prod-btn`
-
-**To update the TikTok link**, search for `silentlogos1882` and replace with your new handle if it ever changes.
+| File | Purpose |
+|------|---------|
+| `index.html` | The website — layout, styles, scripts |
+| `products.json` | Product catalog (written by the admin panel) |
+| `images/` | Product photos (written by the admin panel) |
+| `fb-import-template.csv` | Template for importing Facebook listings |
 
 ---
 
@@ -68,6 +62,7 @@ Everything lives in `index.html`. Open it in any text editor (VS Code recommende
 - **Google Fonts** — Orbitron, Share Tech Mono, Rajdhani
 - **Canvas API** — animated digital rain effect
 - **IntersectionObserver API** — scroll-reveal animations
+- **Cloudflare Worker** (`silentlogos1882-worker`) — admin login + publishing to GitHub
 
 ---
 
