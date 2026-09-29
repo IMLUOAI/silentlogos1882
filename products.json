@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-29T22:02:44.455Z",
+  "updatedAt": "2026-09-29T22:31:25.525Z",
   "products": [
     {
       "id": "p1790686934525",
@@ -467,6 +467,32 @@
       "link": "https://www.facebook.com/marketplace/item/1712769559833997",
       "imgs": [
         "images/p1790687685996-a49a1a43.jpg"
+      ]
+    },
+    {
+      "id": "pmun930cq4ja6",
+      "name": "WARMDERN Boho Duvet Cover Queen, Striped Grey Textured Tufted Bedding Set",
+      "price": 35,
+      "cat": "Bedroom",
+      "tag": "",
+      "status": "active",
+      "desc": "Grey striped textured tufted boho duvet cover set, 3-piece. Soft, breathable microfiber with an elegant striped tufted design. Includes duvet cover and matching pillowcases. New. Pickup in Plano, TX.",
+      "link": "https://www.facebook.com/marketplace/item/1031128133249360",
+      "imgs": [
+        "images/pmun930cq4ja6-502b6544.jpg"
+      ]
+    },
+    {
+      "id": "pmun93gkk02ph",
+      "name": "Boho Duvet Cover Full, Wave Striped Textured White Tufted Bedding Set",
+      "price": 30,
+      "cat": "Bedroom",
+      "tag": "",
+      "status": "active",
+      "desc": "Classic tufted design with a minimalist wavy striped pattern. Tufted embroidery adds elegant detail without being over-the-top. Ultra-soft premium microfiber fabric, breathable and comfortable. 3-piece set includes duvet cover and matching pillowcases. New. Pickup in Plano, TX.",
+      "link": "https://www.facebook.com/marketplace/item/1089141823841970",
+      "imgs": [
+        "images/pmun93gkk02ph-bacb96b4.jpg"
       ]
     }
   ]
