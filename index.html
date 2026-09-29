@@ -336,6 +336,13 @@ section{position:relative;z-index:1;padding:80px 24px}
 .img-upload-zone p{font-family:var(--font-mono);font-size:.72rem;color:var(--text2);margin-top:8px}
 .img-upload-zone small{font-size:.62rem;color:var(--text2);opacity:.7}
 .upload-preview{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.img-upload-zone.dragover{border-color:var(--cyan);background:rgba(89,148,206,.12);transform:scale(1.01)}
+.img-upload-zone.busy{pointer-events:none;opacity:.75;border-style:solid;border-color:var(--purple)}
+.img-upload-zone.busy svg{animation:uploadPulse 1s ease-in-out infinite}
+@keyframes uploadPulse{0%,100%{opacity:.3}50%{opacity:.9}}
+.admin-img-item img{cursor:pointer}
+.admin-img-item.fade-in{animation:imgIn .25s ease}
+@keyframes imgIn{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:none}}
 .admin-img-item{position:relative;display:inline-block}
 .admin-img-item img{
   width:72px;height:58px;object-fit:cover;border-radius:6px;
@@ -689,12 +696,13 @@ footer{
           <!-- Existing images with delete controls -->
           <div id="adminImgList" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:10px"></div>
           <!-- Upload zone -->
-          <div class="img-upload-zone" onclick="document.getElementById('pImgInput').click()">
+          <div class="img-upload-zone" id="imgUploadZone" role="button" tabindex="0"
+            onclick="openImagePicker()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openImagePicker()}">
             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin:0 auto;display:block;opacity:.5"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-            <p>Click to add more photos</p>
-            <small>JPG, PNG, WebP — multiple files allowed</small>
-            <input type="file" id="pImgInput" accept="image/*" multiple style="display:none" onchange="adminAddImages(this)"/>
+            <p id="imgUploadText">Click, drag &amp; drop, or paste photos</p>
+            <small>JPG, PNG, WebP — multiple files allowed · click a thumbnail to make it MAIN</small>
           </div>
+          <input type="file" id="pImgInput" accept="image/*" multiple style="display:none" onchange="adminAddImages(this.files);this.value=''"/>
           <input type="hidden" id="pImgs" value="[]"/>
         </div>
         <div class="form-actions">
@@ -846,7 +854,16 @@ const DEFAULT_PRODUCTS = [
 let products = JSON.parse(localStorage.getItem('sl1882_products')||'null') || DEFAULT_PRODUCTS;
 let activeCat = 'All';
 
-function saveProducts(){ localStorage.setItem('sl1882_products', JSON.stringify(products)); }
+function saveProducts(){
+  try{
+    localStorage.setItem('sl1882_products', JSON.stringify(products));
+    return true;
+  }catch(err){
+    console.error('Save failed:', err);
+    showToast('Storage is full — remove some photos and try again.');
+    return false;
+  }
+}
 
 function buildCatBar(){
   const bar = document.getElementById('catBar');
@@ -974,27 +991,33 @@ function saveProduct(){
   const link = document.getElementById('pLink').value.trim() || FB_URL;
   const imgs = JSON.parse(document.getElementById('pImgs').value || '[]');
   if(!name||!price){ showToast('Name and price are required.'); return; }
+  if(imgUploadBusy){ showToast('Still processing photos — one moment…'); return; }
+  const before = products.slice();
   if(id){
     const idx = products.findIndex(p=>p.id===id);
     if(idx>-1) products[idx]={...products[idx],name,price,cat,tag,desc,link,imgs};
   } else {
     products.push({id:'p'+Date.now(),name,price,cat,tag,desc,link,imgs});
   }
-  saveProducts();
+  if(!saveProducts()){ products = before; return; }
   renderProducts();
   renderAdminList();
   resetProductForm();
   showToast('Product saved!');
 }
 
-/* Render the admin image list with per-image delete + "MAIN" badge */
-function renderAdminImgList(){
-  const imgs = JSON.parse(document.getElementById('pImgs').value||'[]');
+/* Render the admin image list with per-image delete + "MAIN" badge.
+   Click a thumbnail to make it the main photo. */
+function getAdminImgs(){ return JSON.parse(document.getElementById('pImgs').value||'[]'); }
+function setAdminImgs(imgs){ document.getElementById('pImgs').value = JSON.stringify(imgs); }
+
+function renderAdminImgList(newFrom){
+  const imgs = getAdminImgs();
   const el = document.getElementById('adminImgList');
   if(!el) return;
   el.innerHTML = imgs.map((src,i)=>`
-    <div class="admin-img-item">
-      <img src="${src}" alt="Photo ${i+1}"/>
+    <div class="admin-img-item${newFrom!=null && i>=newFrom ? ' fade-in' : ''}">
+      <img src="${src}" alt="Photo ${i+1}" onclick="adminSetMainImg(${i})" title="${i===0?'Main photo':'Click to make main photo'}"/>
       ${i===0?'<span class="main-badge">MAIN</span>':''}
       <span class="del-img" onclick="adminDeleteImg(${i})" title="Remove photo">✕</span>
     </div>`).join('');
@@ -1002,30 +1025,114 @@ function renderAdminImgList(){
 }
 
 function adminDeleteImg(idx){
-  const imgs = JSON.parse(document.getElementById('pImgs').value||'[]');
+  const imgs = getAdminImgs();
   imgs.splice(idx,1);
-  document.getElementById('pImgs').value=JSON.stringify(imgs);
+  setAdminImgs(imgs);
   renderAdminImgList();
 }
 
-function adminAddImages(input){
-  const existing = JSON.parse(document.getElementById('pImgs').value||'[]');
-  const files = Array.from(input.files);
-  let done=0;
-  files.forEach(file=>{
-    const reader=new FileReader();
-    reader.onload=e=>{
-      existing.push(e.target.result);
-      done++;
-      if(done===files.length){
-        document.getElementById('pImgs').value=JSON.stringify(existing);
-        renderAdminImgList();
-        showToast(`${files.length} photo${files.length>1?'s':''} added`);
-      }
-    };
-    reader.readAsDataURL(file);
+function adminSetMainImg(idx){
+  if(idx===0) return;
+  const imgs = getAdminImgs();
+  imgs.unshift(imgs.splice(idx,1)[0]);
+  setAdminImgs(imgs);
+  renderAdminImgList();
+}
+
+/* Photos are resized + compressed in the browser before being stored.
+   Raw phone photos (3–8 MB each) would overflow localStorage (~5 MB total)
+   and the save would silently fail. */
+const IMG_MAX_SIDE = 1400;
+const IMG_QUALITY  = 0.82;
+let imgUploadBusy = false;
+
+function openImagePicker(){
+  if(imgUploadBusy) return;
+  document.getElementById('pImgInput').click();
+}
+
+function loadImageFromFile(file){
+  return new Promise((resolve,reject)=>{
+    const url = URL.createObjectURL(file);
+    const img = new Image();
+    img.onload = ()=>{ URL.revokeObjectURL(url); resolve(img); };
+    img.onerror = ()=>{ URL.revokeObjectURL(url); reject(new Error('Could not read '+file.name)); };
+    img.src = url;
   });
-  input.value='';
+}
+
+async function compressImage(file){
+  const img = await loadImageFromFile(file);
+  const scale = Math.min(1, IMG_MAX_SIDE / Math.max(img.naturalWidth, img.naturalHeight));
+  const w = Math.round(img.naturalWidth * scale), h = Math.round(img.naturalHeight * scale);
+  const canvas = document.createElement('canvas');
+  canvas.width = w; canvas.height = h;
+  const ctx = canvas.getContext('2d');
+  ctx.fillStyle = '#ffffff';            // JPEG has no transparency — use a white background
+  ctx.fillRect(0,0,w,h);
+  ctx.drawImage(img,0,0,w,h);
+  return canvas.toDataURL('image/jpeg', IMG_QUALITY);
+}
+
+function setUploadBusy(busy, text){
+  imgUploadBusy = busy;
+  const zone = document.getElementById('imgUploadZone');
+  const label = document.getElementById('imgUploadText');
+  if(zone) zone.classList.toggle('busy', busy);
+  if(label) label.textContent = text || 'Click, drag & drop, or paste photos';
+}
+
+async function adminAddImages(fileList){
+  if(imgUploadBusy) return;
+  const files = Array.from(fileList||[]).filter(f=>f.type.startsWith('image/') || /\.(jpe?g|png|webp|gif|heic|heif)$/i.test(f.name));
+  if(!files.length){ showToast('Please choose image files (JPG, PNG, WebP).'); return; }
+
+  const imgs = getAdminImgs();
+  const startLen = imgs.length;
+  let added = 0, failed = 0;
+  for(let i=0;i<files.length;i++){
+    setUploadBusy(true, `Processing ${i+1} of ${files.length}…`);
+    try{
+      imgs.push(await compressImage(files[i]));
+      added++;
+      setAdminImgs(imgs);
+      renderAdminImgList(imgs.length-1);   // show each photo as soon as it's ready
+    }catch(err){
+      console.warn(err);
+      failed++;
+    }
+  }
+  setUploadBusy(false);
+
+  if(added){
+    showToast(`${added} photo${added>1?'s':''} added — click "Save Product" to keep ${added>1?'them':'it'}.`
+      + (failed ? ` (${failed} couldn't be read)` : ''));
+  }else{
+    showToast(`Couldn't read ${failed>1?'those files':'that file'}. Try JPG or PNG.`);
+  }
+}
+
+/* Drag & drop and paste support for the upload zone */
+function initImageUploadZone(){
+  const zone = document.getElementById('imgUploadZone');
+  if(!zone) return;
+  ['dragenter','dragover'].forEach(ev=>zone.addEventListener(ev,e=>{
+    e.preventDefault(); if(!imgUploadBusy) zone.classList.add('dragover');
+  }));
+  ['dragleave','dragend','drop'].forEach(ev=>zone.addEventListener(ev,e=>{
+    e.preventDefault(); zone.classList.remove('dragover');
+  }));
+  zone.addEventListener('drop',e=>adminAddImages(e.dataTransfer.files));
+  // Paste screenshots/images while the admin panel is open
+  document.addEventListener('paste',e=>{
+    if(!document.getElementById('admin').classList.contains('active')) return;
+    const files = Array.from(e.clipboardData?.files||[]).filter(f=>f.type.startsWith('image/'));
+    if(files.length){ e.preventDefault(); adminAddImages(files); }
+  });
+  // Stop the browser from opening a file if it's dropped just outside the zone
+  ['dragover','drop'].forEach(ev=>window.addEventListener(ev,e=>{
+    if(e.dataTransfer && Array.from(e.dataTransfer.types||[]).includes('Files')) e.preventDefault();
+  }));
 }
 
 function editProduct(id){
@@ -1122,10 +1229,12 @@ function openAdminPanel(){
 /* ═══════════════════════════════════════════════════
    TOAST
 ═══════════════════════════════════════════════════ */
+let _toastTimer;
 function showToast(msg){
   const t=document.getElementById('toast');
   t.textContent=msg;t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2800);
+  clearTimeout(_toastTimer);
+  _toastTimer=setTimeout(()=>t.classList.remove('show'),3200);
 }
 
 /* ═══════════════════════════════════════════════════
@@ -1323,6 +1432,7 @@ document.addEventListener('DOMContentLoaded',()=>{
   buildCatBar();
   renderProducts();
   renderAdminList();
+  initImageUploadZone();
   observeReveal();
 
   // Nav active highlight on scroll
