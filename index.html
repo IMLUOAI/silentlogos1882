@@ -964,6 +964,7 @@ function normalizeProduct(p){
 ═══════════════════════════════════════════════════ */
 let products = [];
 let publishedSnapshot = '[]';   // JSON of what's live on the website
+let publishedUpdatedAt = '';     // updatedAt of the products.json we loaded
 let productsLoaded = false;
 let productsLoadError = false;
 let activeCat = 'All';
@@ -977,6 +978,7 @@ async function loadProducts(){
     if(!r.ok) throw new Error('HTTP ' + r.status);
     const data = await r.json();
     products = (Array.isArray(data) ? data : (data.products || [])).map(normalizeProduct);
+    publishedUpdatedAt = data.updatedAt || '';
     productsLoadError = false;
   }catch(err){
     console.error('Could not load products.json', err);
@@ -1225,7 +1227,7 @@ function countChanges(){
 
 function saveDraft(){
   try{
-    if(isDirty()) localStorage.setItem(DRAFT_KEY, JSON.stringify({ savedAt: Date.now(), products }));
+    if(isDirty()) localStorage.setItem(DRAFT_KEY, JSON.stringify({ savedAt: Date.now(), basedOn: publishedUpdatedAt, products }));
     else localStorage.removeItem(DRAFT_KEY);
   }catch(e){
     showToast('Draft is too large to back up in this browser — publish soon so changes aren’t lost.');
@@ -1233,17 +1235,17 @@ function saveDraft(){
 }
 
 function restoreDraft(){
-  try{
-    const legacy = JSON.parse(localStorage.getItem(LEGACY_KEY) || 'null');
-    if(legacy && !localStorage.getItem(DRAFT_KEY)){
-      localStorage.setItem(DRAFT_KEY, JSON.stringify({ savedAt: Date.now(), products: legacy }));
-    }
-    localStorage.removeItem(LEGACY_KEY);
-  }catch(e){}
+  // Old browser-only data from the original admin panel is never used (it could be stale or empty).
+  try{ localStorage.removeItem(LEGACY_KEY); }catch(e){}
+  if(productsLoadError) return;
   try{
     const d = JSON.parse(localStorage.getItem(DRAFT_KEY) || 'null');
-    if(d && Array.isArray(d.products)) products = d.products.map(normalizeProduct);
-  }catch(e){}
+    const ok = d && Array.isArray(d.products) && d.products.length > 0
+            && (!d.basedOn || d.basedOn === publishedUpdatedAt);   // drafts made before the latest publish are stale
+    if(!ok){ localStorage.removeItem(DRAFT_KEY); return; }
+    products = d.products.map(normalizeProduct);
+    if(isDirty()) setTimeout(()=>showToast('Restored your unpublished changes from ' + new Date(d.savedAt).toLocaleString() + '.'), 600);
+  }catch(e){ localStorage.removeItem(DRAFT_KEY); }
 }
 
 function refreshAll(){
@@ -1280,10 +1282,27 @@ async function publishChanges(){
   if(publishing || !isDirty()) return;
   if(imgUploadBusy){ showToast('Still processing photos — one moment…'); return; }
   if(!isAdmin()){ showToast('Session expired — log in again (your changes are kept).'); openAdminGate(); return; }
+  if(productsLoadError){ showToast('The live product list didn’t load — refresh the page before publishing.'); return; }
+  // Safety check: publishing that removes products must be confirmed explicitly
+  const liveIds = JSON.parse(publishedSnapshot).map(p=>p.id);
+  const keep = new Set(products.map(p=>p.id));
+  const removed = liveIds.filter(id=>!keep.has(id));
+  if(!products.length){
+    if(prompt(`This would DELETE ALL ${liveIds.length} products from the website.\n\nIf you really want an empty store, type DELETE ALL:`) !== 'DELETE ALL'){
+      showToast('Publish cancelled — nothing was changed.'); return;
+    }
+  }else if(removed.length >= 3){
+    const names = JSON.parse(publishedSnapshot).filter(p=>removed.includes(p.id)).slice(0,8).map(p=>'• '+p.name).join('\n');
+    if(!confirm(`This publish will REMOVE ${removed.length} products from the website:\n\n${names}${removed.length>8?'\n…':''}\n\nContinue?`)){
+      showToast('Publish cancelled — nothing was changed.'); return;
+    }
+  }
   publishing = true; updatePublishBar();
   const sent = products;
   try{
-    const res = await apiFetch('/api/admin/publish', { method:'POST', body: JSON.stringify({ products: sent }) });
+    const res = await apiFetch('/api/admin/publish', { method:'POST', body: JSON.stringify({
+      products: sent, baseUpdatedAt: publishedUpdatedAt, confirmRemovals: removed.length, allowEmpty: !sent.length
+    }) });
     // Show local copies of new photos until GitHub Pages serves them
     res.products.forEach((p,i)=>{
       const old = sent[i];
@@ -1291,6 +1310,7 @@ async function publishChanges(){
     });
     products = res.products.map(normalizeProduct);
     publishedSnapshot = JSON.stringify(products);
+    if(res.updatedAt) publishedUpdatedAt = res.updatedAt;
     localStorage.removeItem(DRAFT_KEY);
     const fails = (res.failedPhotos || []).length;
     commitChange(res.unchanged ? 'Nothing changed.'
@@ -1300,7 +1320,7 @@ async function publishChanges(){
     }
   }catch(err){
     if(err.status === 401){ sessionStorage.removeItem(TOKEN_KEY); showToast('Session expired — log in again (your changes are kept).'); openAdminGate(); }
-    else showToast('Publish failed: ' + err.message);
+    else showToast('Publish failed: ' + err.message + (err.status===409 ? ' Refresh the page to load the latest products, then redo your change.' : ''));
   }finally{
     publishing = false; updatePublishBar();
   }
@@ -1308,6 +1328,7 @@ async function publishChanges(){
 
 function discardDraft(){
   if(!isDirty() || !confirm('Discard all unpublished changes?')) return;
+  if(productsLoadError){ localStorage.removeItem(DRAFT_KEY); location.reload(); return; }
   products = JSON.parse(publishedSnapshot).map(normalizeProduct);
   localStorage.removeItem(DRAFT_KEY);
   resetProductForm();
