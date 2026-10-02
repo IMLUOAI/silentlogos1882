@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-09-30T14:21:59.055Z",
+  "updatedAt": "2026-10-02T18:40:21.314Z",
   "products": [
     {
       "id": "p1790686934525",
@@ -493,6 +493,25 @@
       "link": "https://www.facebook.com/marketplace/item/1089141823841970",
       "imgs": [
         "images/pmun93gkk02ph-bacb96b4.jpg"
+      ]
+    },
+    {
+      "id": "pmurb5s9tl1vx",
+      "name": "Vintage Cow Bells Christmas Decoration – Rustic Hanging Metal Bells with Jute Rope",
+      "price": 8.28,
+      "cat": "Home Décor",
+      "tag": "new",
+      "status": "active",
+      "desc": "Set of 4 vintage-style golden cow bells strung on rustic jute twine. Made of solid iron — sturdy and durable, with a crisp, cheerful jingle. About 42cm long in total; each bell about 4.2cm across. Hang them on your wreath, fireplace, door knob, or window for instant Christmas charm. Handmade, so each set is unique. A lovely gift for Christmas, Thanksgiving, housewarmings, and weddings. Condition: New.",
+      "link": "",
+      "imgs": [
+        "images/pmurb5s9tl1vx-4070e8e2.jpg",
+        "images/pmurb5s9tl1vx-1357e7bb.jpg",
+        "images/pmurb5s9tl1vx-ac19e165.jpg",
+        "images/pmurb5s9tl1vx-3b5f56ee.jpg",
+        "images/pmurb5s9tl1vx-1142707e.jpg",
+        "images/pmurb5s9tl1vx-8d406ef4.jpg",
+        "images/pmurb5s9tl1vx-b08e5696.jpg"
       ]
     }
   ]
