@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-10-02T18:40:21.314Z",
+  "updatedAt": "2026-10-04T05:52:59.485Z",
   "products": [
     {
       "id": "p1790686934525",
@@ -512,6 +512,25 @@
         "images/pmurb5s9tl1vx-1142707e.jpg",
         "images/pmurb5s9tl1vx-8d406ef4.jpg",
         "images/pmurb5s9tl1vx-b08e5696.jpg"
+      ]
+    },
+    {
+      "id": "pmutemllk23o3",
+      "name": "Liquor Bar Home Bar Cabinet with Charging Station and LED Lights – 10-Bottle Wine Rack, 8 Glass Holders",
+      "price": 189,
+      "cat": "Home Décor",
+      "tag": "new",
+      "status": "active",
+      "desc": "Home bar cabinet with built-in charging station and LED lights. Holds 10 wine bottles in the rack plus 8 hanging glass holders. Mesh-door cabinet and open shelves for liquor, glasses, and bar accessories. 2 AC outlets + 2 USB ports for charging devices. Rustic brown finish with sturdy steel frame. Overall dimensions 47.2 in L x 15.7 in W x 35.4 in H. Assembly required. Condition: New.",
+      "link": "",
+      "imgs": [
+        "images/pmutemllk23o3-4e0bfd32.jpg",
+        "images/pmutemllk23o3-c7518f97.jpg",
+        "images/pmutemllk23o3-a6c66710.jpg",
+        "images/pmutemllk23o3-446c3e3d.jpg",
+        "images/pmutemllk23o3-4a35d29f.jpg",
+        "images/pmutemllk23o3-ff8f4e77.jpg",
+        "images/pmutemllk23o3-7e27de23.jpg"
       ]
     }
   ]
